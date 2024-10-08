@@ -1,5 +1,5 @@
-import '../lib/change_app_package_name.dart';
+import '../lib/flutter_app_rebrand.dart';
 
 void main(List<String> arguments) {
-  ChangeAppPackageName.start(arguments);
+  FlutterAppRebrand.init(arguments);
 }

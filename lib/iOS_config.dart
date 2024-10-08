@@ -3,16 +3,14 @@ import 'dart:io';
 
 import './file_utils.dart';
 
-class IosRenameSteps {
-  final String newPackageName;
+class iOSConfig {
+  iOSConfig();
+
   String? oldPackageName;
   static const String PATH_PROJECT_FILE = 'ios/Runner.xcodeproj/project.pbxproj';
   static const String PATH_INFO_PLIST_FILE = 'ios/Runner/Info.plist';
 
-  IosRenameSteps(this.newPackageName);
-
-
-  Future<void> process() async {
+  Future<void> process(String newPackageName) async {
     print("Running for ios");
     if (!await File(PATH_PROJECT_FILE).exists()) {
       print(
@@ -37,32 +35,38 @@ class IosRenameSteps {
     print("Old Package Name: $oldPackageName");
 
     print('Updating project.pbxproj File');
-    await _replace(PATH_PROJECT_FILE);
+    await _replace(PATH_PROJECT_FILE, newPackageName);
     print('Finished updating ios bundle identifier');
   }
 
-  Future<void> _replace(String path) async {
+  Future<void> _replace(String path, String newPackageName) async {
     await replaceInFile(path, oldPackageName, newPackageName);
   }
 
   /// Updates CFBundleName
   Future<void> overwriteInfoPlist(String name) async {
-    final File iOSInfoPlistFile = File(PATH_INFO_PLIST_FILE);
-    final List<String> lines = await iOSInfoPlistFile.readAsLines();
-
-    bool requireChange = false;
-    for (int x = 0; x < lines.length; x++) {
-      String line = lines[x];
-      if (line.contains('CFBundleName')) {
-        requireChange = true;
-        continue;
-      }
-      if (requireChange) {
-        lines[x] = '	<string>$name</string>';
-        requireChange = false;
-      }
+    // Read the file as a string
+    final file = File(PATH_INFO_PLIST_FILE);
+    if (!file.existsSync()) {
+      print('File does not exist');
+      return;
     }
-    iOSInfoPlistFile.writeAsString(lines.join('\n'));
+
+    String content = await file.readAsString();
+
+    // Find the key and replace the corresponding value
+    final keyToUpdate = 'CFBundleDisplayName';
+    final newValue = name;
+
+    // Example: Search for the key and its value and replace the value
+    final updatedContent = content.replaceAllMapped(
+      RegExp('<key>$keyToUpdate</key>\\s*<string>(.*?)</string>'),
+          (match) => '<key>$keyToUpdate</key>\n\t<string>$newValue</string>',
+    );
+
+    // Write the updated content back to the file
+    await file.writeAsString(updatedContent);
+    print('Plist file updated successfully.');
   }
 
 }

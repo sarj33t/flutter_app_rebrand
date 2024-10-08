@@ -3,8 +3,7 @@ import 'dart:io';
 
 import './file_utils.dart';
 
-class AndroidRenameSteps {
-  final String newPackageName;
+class AndroidConfig {
   String? oldPackageName;
 
   static const String PATH_BUILD_GRADLE = 'android/app/build.gradle';
@@ -14,7 +13,7 @@ class AndroidRenameSteps {
   static const String PATH_ACTIVITY = 'android/app/src/main/';
   static const String PATH_DRAWABLE_RES = 'android/app/src/main/res';
 
-  AndroidRenameSteps(this.newPackageName);
+  AndroidConfig();
 
   // Path to your Flutter project's Android res directory
   final resDirectory = Directory(PATH_DRAWABLE_RES);
@@ -30,7 +29,7 @@ class AndroidRenameSteps {
     'mipmap-xxxhdpi'
   ];
 
-  Future<void> process() async {
+  Future<void> process(String newPackageName) async {
     print("Running for android");
     if (!await File(PATH_BUILD_GRADLE).exists()) {
       print('ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
@@ -51,7 +50,7 @@ class AndroidRenameSteps {
     print("Old Package Name: $oldPackageName");
 
     print('Updating build.gradle File');
-    await _replace(PATH_BUILD_GRADLE);
+    await _replace(PATH_BUILD_GRADLE, newPackageName);
 
     var mText = 'package="$newPackageName">';
     var mRegex = '(package=.*)';
@@ -65,23 +64,23 @@ class AndroidRenameSteps {
     print('Updating Profile Manifest file');
     await replaceInFileRegex(PATH_MANIFEST_PROFILE, mRegex, mText);
 
-    await updateMainActivity();
+    await updateMainActivity(newPackageName);
     print('Finished updating android package name');
   }
 
-  Future<void> updateMainActivity() async {
+  Future<void> updateMainActivity(String newPackageName) async {
     var path = await findMainActivity(type: 'java');
     if (path != null) {
-      processMainActivity(path, 'java');
+      processMainActivity(path, 'java', newPackageName);
     }
 
     path = await findMainActivity(type: 'kotlin');
     if (path != null) {
-      processMainActivity(path, 'kotlin');
+      processMainActivity(path, 'kotlin', newPackageName);
     }
   }
 
-  Future<void> processMainActivity(File path, String type) async {
+  Future<void> processMainActivity(File path, String type, String newPackageName) async {
     var extension = type == 'java' ? 'java' : 'kt';
     print('Project is using $type');
     print('Updating MainActivity.$extension');
@@ -100,10 +99,11 @@ class AndroidRenameSteps {
     await deleteEmptyDirs(type);
   }
 
-  Future<void> _replace(String path) async {
+  Future<void> _replace(String path, String newPackageName) async {
     await replaceInFile(path, oldPackageName, newPackageName);
   }
 
+  /// Delete .DStore file for macOS & Empty dirs
   Future<void> deleteEmptyDirs(String type) async {
     var dirs = await dirContents(Directory(PATH_ACTIVITY + type));
     dirs = dirs.reversed.toList();
@@ -175,7 +175,7 @@ class AndroidRenameSteps {
   }
 
   /// Updates App Label
-  Future<void> overwriteAndroidManifest(String name) async {
+  Future<void> updateAppName(String name) async {
     final File androidManifestFile = File(PATH_MANIFEST);
     final List<String> lines = await androidManifestFile.readAsLines();
     for (int x = 0; x < lines.length; x++) {

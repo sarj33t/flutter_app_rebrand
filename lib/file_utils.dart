@@ -34,17 +34,3 @@ Future<void> writeFileFromString(String path, String contents) async {
   var file = File(path);
   await file.writeAsString(contents);
 }
-
-Future<void> deleteOldDirectories(String lang, String oldPackage, String basePath) async {
-  var dirList = oldPackage.split('.');
-  var reversed = dirList.reversed.toList();
-
-  for (int i = 0; i < reversed.length; i++) {
-    String path = '$basePath$lang/' + dirList.join('/');
-
-    if (Directory(path).listSync().toList().isEmpty) {
-      Directory(path).deleteSync();
-    }
-    dirList.removeLast();
-  }
-}
