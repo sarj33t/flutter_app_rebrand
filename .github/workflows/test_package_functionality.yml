@@ -35,7 +35,7 @@ jobs:
 
       - name: Create rebrand.json
         run: |
-          echo '{"packageName": "new.package.name", "launcherIconPath": "", "appName": "Panda App" }' > rebrand.json
+          echo '{"packageName": "new.package.name", "launcherIconPath": "", "appName": "Panda App" }' > test_app/rebrand.json
 
       - name: Run package rename command
         run: |
