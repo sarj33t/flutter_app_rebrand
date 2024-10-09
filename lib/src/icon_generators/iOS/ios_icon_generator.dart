@@ -6,7 +6,7 @@ import 'package:flutter_app_rebrand/src/utils/color_utils.dart';
 import 'package:flutter_app_rebrand/src/utils/image_utils.dart';
 import 'package:image/image.dart';
 
-import 'package:flutter_app_rebrand/src/constants/constants.dart';
+import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'models/contents_image.dart';
 import 'models/contents_info.dart';
 ///
@@ -45,43 +45,40 @@ class IoSIconGenerator{
       );
     }
     String iconName;
-    final List<IosIconTemplate> generateIosIcons = legacyIosIcons;
+    final List<IosIconTemplate> generateIosIcons = FARConstants.legacyIosIcons;
 
     print('Overwriting default iOS launcher icon with new icon');
     for (IosIconTemplate template in generateIosIcons) {
       overwriteDefaultIcons(template, image);
     }
 
-    for (IosIconTemplate template in imageSets) {
+    for (IosIconTemplate template in FARConstants.imageSets) {
       overwriteDefaultImageSets(template, image);
     }
 
-    iconName = iosDefaultIconName;
+    iconName = FARConstants.iosDefaultIconName;
     changeIosLauncherIcon('AppIcon');
     // Still need to modify the Contents.json file
     // since the user could have added dark and tinted icons
     modifyDefaultContentsFile(iconName);
   }
 
-  /// Note: Do not change interpolation unless you end up with better results (see issue for result when using cubic
-  /// interpolation)
-  /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
   void overwriteDefaultIcons(IosIconTemplate template, Image image, [String iconNameSuffix = '']) {
     final Image newFile = ImageUtils.instance.createResizedImage(template.size, image);
       // createResizedImage(template, image);
-    File('$iosDefaultIconFolder$iosDefaultIconName$iconNameSuffix${template.name}.png')
+    File('${FARConstants.iosDefaultIconFolder}${FARConstants.iosDefaultIconName}$iconNameSuffix${template.name}.png')
       .writeAsBytesSync(encodePng(newFile));
   }
 
   void overwriteDefaultImageSets(IosIconTemplate template, Image image, [String iconNameSuffix = '']) {
     final Image newFile = ImageUtils.instance.createResizedImage(template.size, image);
-    File('$iosDefaultLaunchImageFolder$iosDefaultLaunchImageName$iconNameSuffix${template.name}.png')
+    File('${FARConstants.iosDefaultLaunchImageFolder}${FARConstants.iosDefaultLaunchImageName}$iconNameSuffix${template.name}.png')
         .writeAsBytesSync(encodePng(newFile));
   }
 
   /// Change the iOS launcher icon
   Future<void> changeIosLauncherIcon(String iconName) async {
-    final File iOSConfigFile = File(iosConfigFile);
+    final File iOSConfigFile = File(FARConstants.iosConfigFile);
     final List<String> lines = await iOSConfigFile.readAsLines();
 
     bool onConfigurationSection = false;
@@ -115,7 +112,7 @@ class IoSIconGenerator{
   /// Create the Contents.json file
   void modifyContentsFile(String newIconName) {
     final String newIconFolder =
-        '$iosAssetFolder$newIconName.appiconset/Contents.json';
+        '${FARConstants.iosAssetFolder}$newIconName.appiconset/Contents.json';
     File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
       final String contentsFileContent =
       generateContentsFileAsString(newIconName);
@@ -126,7 +123,7 @@ class IoSIconGenerator{
   /// Modify default Contents.json file
   void modifyDefaultContentsFile(String newIconName) {
     const String newIconFolder =
-        '${iosAssetFolder}AppIcon.appiconset/Contents.json';
+        '${FARConstants.iosAssetFolder}AppIcon.appiconset/Contents.json';
     File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
       final String contentsFileContent =
       generateContentsFileAsString(newIconName);
@@ -181,7 +178,6 @@ class IoSIconGenerator{
         );
       }
     }
-
     return imageList;
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_app_rebrand/src/constants/constants.dart';
+import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
 class IoSRebrand {
@@ -10,13 +10,13 @@ class IoSRebrand {
 
   Future<void> process(String newPackageName) async {
     print("Running for ios");
-    if (!await File(iOSProjectFile).exists()) {
+    if (!await File(FARConstants.iOSProjectFile).exists()) {
       print(
           'ERROR:: project.pbxproj file not found, Check if you have a correct ios directory present in your project'
               '\n\nrun " flutter create . " to regenerate missing files.');
       return;
     }
-    String? contents = await FileUtils.instance.readFileAsString(iOSProjectFile);
+    String? contents = await FileUtils.instance.readFileAsString(FARConstants.iOSProjectFile);
 
     var reg = RegExp(
         r'PRODUCT_BUNDLE_IDENTIFIER\s*=?\s*(.*);', caseSensitive: true,
@@ -24,7 +24,7 @@ class IoSRebrand {
     var match = reg.firstMatch(contents!);
     if (match == null) {
       print(
-          'ERROR:: Bundle Identifier not found in project.pbxproj file, Please file an issue on github with $iOSProjectFile file attached.');
+          'ERROR:: Bundle Identifier not found in project.pbxproj file, Please file an issue on github with ${FARConstants.iOSProjectFile} file attached.');
       return;
     }
     var name = match.group(1);
@@ -33,7 +33,7 @@ class IoSRebrand {
     print("Old Package Name: $oldPackageName");
 
     print('Updating project.pbxproj File');
-    await _replace(iOSProjectFile, newPackageName);
+    await _replace(FARConstants.iOSProjectFile, newPackageName);
     print('Finished updating ios bundle identifier');
   }
 
@@ -44,7 +44,7 @@ class IoSRebrand {
   /// Updates CFBundleName
   Future<void> overwriteInfoPlist(String name) async {
     // Read the file as a string
-    final file = File(iOSPlistFile);
+    final file = File(FARConstants.iOSPlistFile);
     if (!file.existsSync()) {
       print('File does not exist');
       return;

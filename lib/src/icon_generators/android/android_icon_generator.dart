@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter_app_rebrand/src/configs/config.dart';
-import 'package:flutter_app_rebrand/src/constants/constants.dart';
+import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/icon_generators/android/models/android_icon_template.dart';
 import 'package:flutter_app_rebrand/src/utils/image_utils.dart';
 import 'package:image/image.dart';
@@ -22,20 +22,20 @@ class AndroidIconGenerator{
     if (image == null) {
       return;
     }
-    final File androidManifestFile = File(androidManifest);
+    final File androidManifestFile = File(FARConstants.androidManifest);
 
     print(
       'Overwriting the default Android launcher icon with a new icon',
     );
-    for (AndroidIconTemplate template in androidIcons) {
+    for (AndroidIconTemplate template in FARConstants.androidIcons) {
       overwriteExistingIcons(
         template,
         image,
-        androidFileName
+        FARConstants.androidFileName
       );
     }
     overwriteAndroidManifestWithNewLauncherIcon(
-      androidDefaultIconName,
+      FARConstants.androidDefaultIconName,
       androidManifestFile,
     );
   }
@@ -54,7 +54,7 @@ class AndroidIconGenerator{
   void overwriteExistingIcons(AndroidIconTemplate template, Image image, String filename) {
     final Image newFile = ImageUtils.instance.createResizedImage(template.size, image);
     File(
-      '${androidResFolder()}${template.directoryName}/$filename',
+      '${FARConstants.androidResFolder()}${template.directoryName}/$filename',
     ).create(recursive: true).then((File file) {
       file.writeAsBytesSync(encodePng(newFile));
     });

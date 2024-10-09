@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:flutter_app_rebrand/src/configs/android_rebrand.dart';
 import 'package:flutter_app_rebrand/src/configs/config.dart';
 import 'package:flutter_app_rebrand/src/configs/iOS_rebrand.dart';
+import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/icon_generators/android/android_icon_generator.dart';
+import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 import 'dart:io';
 import 'src/icon_generators/iOS/ios_icon_generator.dart';
 
@@ -18,40 +20,40 @@ class FlutterAppRebrand {
     }
 
     // Check if rebrand.json file exists
-    const filePath = 'rebrand.json';
-    final rebrandFile = File(filePath);
-
-    if (!await rebrandFile.exists()) {
-      print('Error: rebrand.json file not found.');
+    final bool fileExist = await FileUtils.instance.rebrandJSONExist();
+    if (!fileExist) {
+      print('Error: ${FARConstants.rebrandFileKey} file not found.');
       return;
     }
+    _processToRebrandApp();
+  }
 
+  /// Process to rebrand the application
+  static Future<void> _processToRebrandApp() async{
     try {
       // Parse the JSON
-      final contents = await rebrandFile.readAsString();
+      final String contents = await File(FARConstants.rebrandFileKey).readAsString();
       final data = jsonDecode(contents);
 
-      assert(data['bundleId'] is String, 'BundleId must be String');
-      assert(data['iconPath'] is String, 'IconPath must be String');
-      assert(data['appName'] is String, 'AppName must be String');
+      assert(data[FARConstants.packageNameKey] is String, 'Package name must be String');
+      assert(data[FARConstants.launcherIconPathKey] is String, 'Launcher Icon path must be String');
+      assert(data[FARConstants.appNameKey] is String, 'App Name must be String');
 
       // Extract fields from JSON
-      final String newBundleId = data['bundleId'];
-      final String newIcon = data['iconPath'];
-      final String newAppName = data['appName'];
+      final String newPackageName = data[FARConstants.packageNameKey];
+      final String newLauncherIcon = data[FARConstants.launcherIconPathKey];
+      final String newAppName = data[FARConstants.appNameKey];
 
-      if (newBundleId.isNotEmpty) {
-        await AndroidRebrand().process(newBundleId);
-        await IoSRebrand().process(newBundleId);
+      if (newPackageName.isNotEmpty) {
+        await AndroidRebrand().process(newPackageName);
+        await IoSRebrand().process(newPackageName);
       }
-      if(newIcon.isNotEmpty){
+      if(newLauncherIcon.isNotEmpty){
         final config = Config(
-          imagePath: newIcon
+            imagePath: newLauncherIcon
         );
-        IoSIconGenerator().createIcons(
-          config
-        );
-         AndroidIconGenerator().createDefaultIcons(config);
+        IoSIconGenerator().createIcons(config);
+        AndroidIconGenerator().createDefaultIcons(config);
       }
       if(newAppName.isNotEmpty){
         await AndroidRebrand().updateAppName(newAppName);

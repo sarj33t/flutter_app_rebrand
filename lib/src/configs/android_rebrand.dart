@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
-import 'package:flutter_app_rebrand/src/constants/constants.dart';
 
 class AndroidRebrand {
   AndroidRebrand();
@@ -9,7 +9,7 @@ class AndroidRebrand {
   String? oldPackageName;
 
   // Path to your Flutter project's Android res directory
-  final resDirectory = Directory(androidDrawableResFolder);
+  final resDirectory = Directory(FARConstants.androidDrawableResFolder);
 
   // List of folders where the ic_launcher.png file should be replaced
   final directories = [
@@ -24,17 +24,17 @@ class AndroidRebrand {
 
   Future<void> process(String newPackageName) async {
     print("Running for android");
-    if (!await File(androidAppBuildGradle).exists()) {
+    if (!await File(FARConstants.androidAppBuildGradle).exists()) {
       print('ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
           '\n\nrun " flutter create . " to regenerate missing files.');
       return;
     }
-    String? contents = await FileUtils.instance.readFileAsString(androidAppBuildGradle);
+    String? contents = await FileUtils.instance.readFileAsString(FARConstants.androidAppBuildGradle);
 
     var reg = RegExp(r'applicationId\s*=?\s*"(.*)"', caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if(match == null) {
-      print('ERROR:: applicationId not found in build.gradle file, Please file an issue on github with $androidAppBuildGradle file attached.');
+      print('ERROR:: applicationId not found in build.gradle file, Please file an issue on github with ${FARConstants.androidAppBuildGradle} file attached.');
       return;
     }
     var name = match.group(1);
@@ -43,19 +43,19 @@ class AndroidRebrand {
     print("Old Package Name: $oldPackageName");
 
     print('Updating build.gradle File');
-    await _replace(androidAppBuildGradle, newPackageName);
+    await _replace(FARConstants.androidAppBuildGradle, newPackageName);
 
     var mText = 'package="$newPackageName">';
     var mRegex = '(package=.*)';
 
     print('Updating Main Manifest file');
-    await FileUtils.instance.replaceInFileRegex(androidManifest, mRegex, mText);
+    await FileUtils.instance.replaceInFileRegex(FARConstants.androidManifest, mRegex, mText);
 
     print('Updating Debug Manifest file');
-    await FileUtils.instance.replaceInFileRegex(androidDebugManifest, mRegex, mText);
+    await FileUtils.instance.replaceInFileRegex(FARConstants.androidDebugManifest, mRegex, mText);
 
     print('Updating Profile Manifest file');
-    await FileUtils.instance.replaceInFileRegex(androidProfileManifest, mRegex, mText);
+    await FileUtils.instance.replaceInFileRegex(FARConstants.androidProfileManifest, mRegex, mText);
 
     await updateMainActivity(newPackageName);
     print('Finished updating android package name');
@@ -81,7 +81,7 @@ class AndroidRebrand {
         path.path, r'^(package (?:\.|\w)+)', "package $newPackageName");
 
     String newPackagePath = newPackageName.replaceAll('.', '/');
-    String newPath = '$androidActivityPath$type/$newPackagePath';
+    String newPath = '${FARConstants.androidActivityPath}$type/$newPackagePath';
 
     print('Creating New Directory Structure');
     await Directory(newPath).create(recursive: true);
@@ -98,7 +98,7 @@ class AndroidRebrand {
 
   /// Delete .DStore file for macOS & Empty dirs
   Future<void> deleteEmptyDirs(String type) async {
-    var dirs = await dirContents(Directory(androidActivityPath + type));
+    var dirs = await dirContents(Directory(FARConstants.androidActivityPath + type));
     dirs = dirs.reversed.toList();
     for (var dir in dirs) {
       if (dir is Directory) {
@@ -127,7 +127,7 @@ class AndroidRebrand {
   }
 
   Future<File?> findMainActivity({String type = 'java'}) async {
-    var files = await dirContents(Directory(androidActivityPath + type));
+    var files = await dirContents(Directory(FARConstants.androidActivityPath + type));
     String extension = type == 'java' ? 'java' : 'kt';
     for (var item in files) {
       if (item is File) {
@@ -169,7 +169,7 @@ class AndroidRebrand {
 
   /// Updates App Label
   Future<void> updateAppName(String name) async {
-    final File androidManifestFile = File(androidManifest);
+    final File androidManifestFile = File(FARConstants.androidManifest);
     final List<String> lines = await androidManifestFile.readAsLines();
     for (int x = 0; x < lines.length; x++) {
       String line = lines[x];

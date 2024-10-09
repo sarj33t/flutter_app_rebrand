@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
+
 /// [FileUtils]
 class FileUtils{
   static final FileUtils _singleton = FileUtils._internal();
@@ -39,6 +41,12 @@ class FileUtils{
   Future<void> writeFileFromString(String path, String contents) async {
     var file = File(path);
     await file.writeAsString(contents);
+  }
+
+  Future<bool> rebrandJSONExist() async{
+    const filePath = FARConstants.rebrandFileKey;
+    final File rebrandFile = File(filePath);
+    return await rebrandFile.exists();
   }
 }
 
