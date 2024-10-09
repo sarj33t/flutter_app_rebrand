@@ -46,7 +46,7 @@ jobs:
         run: |
           cd test_app
           grep -q "applicationId = \"new.package.name\"" android/app/build.gradle || exit 1
-          grep -q "package com.new.package.name" android/app/src/main/kotlin/new/package/name/MainActivity.kt || exit 1
+          grep -q "package new.package.name" android/app/src/main/kotlin/new/package/name/MainActivity.kt || exit 1
 
       - name: Check iOS files
         run: |
