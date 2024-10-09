@@ -9,3 +9,6 @@ homepage: https://github.com/sarj33t/flutter_app_rebrand
 
 environment:
   sdk: ^3.5.3
+
+dependencies:
+  image: ^4.2.0

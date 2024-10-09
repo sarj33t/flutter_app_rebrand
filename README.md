@@ -1,31 +1,29 @@
-# Change App Package Name for Flutter
-Change App Package Name with single command. It makes the process very easy and fast.
+# Flutter App Rebrand
+
+A Flutter app rebrand involves updating the app’s visual identity, such as changing the package name, launcher icon, alongside any logos or assets. It ensures consistency with the new branding while maintaining the core functionality.
 
 ## What It does?
-- [x] Update AndroidManifest.xml files for release, debug & profile
-- [x] Update build.gradle file
-- [x] Update MainActivity file. Both java & kotlin supported.
-- [x] Move MainActivity file to new package directory structure
-- [x] Delete old package name directory structure.
-- [x] Update Product Bundle Identifier in iOS.
-  - if you have customized CFBundleIdentifier in Info.plist, it will not be updated. You have to update it manually.
-- [x] Specify which platform they want to rename the package for.
+- [x] Updates AndroidManifest.xml, build.gradle and MainActivity in both Java and Kotlin
+- [x] Moves MainActivity to the new package directory structure and deletes old one
+- [x] Generate & updates old ic_launcher icons with new ones
+- [x] Updates Product Bundle Identifier in iOS (Runner.xcodeproj)
+- [x] Generate & updates AppIcons and ImageSets
 
 ## How to Use?
 
-Add Change App Package Name to your `pubspec.yaml` in `dev_dependencies:` section. 
+Add Flutter App Rebrand to your `pubspec.yaml` in `dev_dependencies:` section. 
 ```yaml
 dev_dependencies: 
-  change_app_package_name: ^1.4.0
+  flutter_app_rebrand: ^1.0.0
 ```
 or run this command
 ```bash
-flutter pub add -d change_app_package_name
+flutter pub add -d flutter_app_rebrand
 ```
 Not migrated to null safety yet? use old version like this
 ```yaml
 dev_dependencies: 
-  change_app_package_name: ^1.4.0
+  flutter_app_rebrand: ^1.0.0
 ```
 
 
@@ -36,31 +34,30 @@ flutter pub get
 Run this command to change the package name for both platforms.
 
 ```
-dart run change_app_package_name:main com.new.package.name
-```
-To rename only Android:
-```
-dart run change_app_package_name:main com.new.package.name --android
-```
-To rename only IOS:
-```
-dart run change_app_package_name:main com.new.package.name --ios
+dart run flutter_app_rebrand:main rebrand.json
 ```
 
-Where `com.new.package.name` is the new package name that you want for your app. replace it with any name you want.
+where `rebrand.json` is the JSON file contains the new package name, path to the new launcher icon, and the updated app name.
+
+## Example rebrand.json File
+```
+{
+  "bundleId": "new.bundle.id",
+  "iconPath": "/Users/PATH/TO/ICON/ic_launcher.png",
+  "appName": "New App Name"
+}
+```
 
 ## Meta
 
-Atiq Samtia– [@AtiqSamtia](https://twitter.com/atiqsamtia) – me@atiqsamtia.com
-
 Distributed under the MIT license.
 
-[https://github.com/atiqsamtia/change_app_package_name](https://github.com/atiqsamtia/change_app_package_name)
+[https://github.com/sarj33t/flutter_app_rebrand](https://github.com/sarj33t/flutter_app_rebrand)
 
 ## Contributing
 
-1. Fork it (<https://github.com/atiqsamtia/change_app_package_name/fork>)
-2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Commit your changes (`git commit -am 'Add some fooBar'`)
-4. Push to the branch (`git push origin feature/fooBar`)
-5. Create a new Pull Request
+1. Fork the repository: (<https://github.com/sarj33t/flutter_app_rebrand/fork>)
+2. Create a new feature branch (`git checkout -b feature/your-feature-name`)
+3. Commit your changes with a descriptive message (`git commit -am 'Add new feature: your-feature-name''`)
+4. Push to the branch (`git push origin feature/your-feature-name`)
+5. Open a Pull Request and submit it for review.

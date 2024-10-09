@@ -1,9 +1,12 @@
 library flutter_app_rebrand;
 
 import 'dart:convert';
-import './android_config.dart';
-import './iOS_config.dart';
+import 'package:flutter_app_rebrand/src/configs/android_rebrand.dart';
+import 'package:flutter_app_rebrand/src/configs/config.dart';
+import 'package:flutter_app_rebrand/src/configs/iOS_rebrand.dart';
+import 'package:flutter_app_rebrand/src/icon_generators/android/android_icon_generator.dart';
 import 'dart:io';
+import 'src/icon_generators/iOS/ios_icon_generator.dart';
 
 /// [FlutterAppRebrand]
 class FlutterAppRebrand {
@@ -14,31 +17,46 @@ class FlutterAppRebrand {
       return;
     }
 
-    final filePath = args[0];
+    // Check if rebrand.json file exists
+    const filePath = 'rebrand.json';
+    final rebrandFile = File(filePath);
 
-    // Read the file content
-    final file = File(filePath);
-    if (!file.existsSync()) {
-      print('File does not exist');
+    if (!await rebrandFile.exists()) {
+      print('Error: rebrand.json file not found.');
       return;
     }
 
     try {
       // Parse the JSON
-      final contents = await file.readAsString();
+      final contents = await rebrandFile.readAsString();
       final data = jsonDecode(contents);
 
+      assert(data['bundleId'] is String, 'BundleId must be String');
+      assert(data['iconPath'] is String, 'IconPath must be String');
+      assert(data['appName'] is String, 'AppName must be String');
+
       // Extract fields from JSON
-      final newPackageName = data['package_name'];
-      final newLauncherIcon = data['launcher_icon'];
-      final newAppTitle = data['app_label'];
+      final String newBundleId = data['bundleId'];
+      final String newIcon = data['iconPath'];
+      final String newAppName = data['appName'];
 
-      await AndroidConfig().process(newPackageName);
-      await iOSConfig().process(newPackageName);
-
-      await AndroidConfig().updateIcon(newLauncherIcon);
-      await AndroidConfig().updateAppName(newAppTitle);
-      await iOSConfig().overwriteInfoPlist(newAppTitle);
+      if (newBundleId.isNotEmpty) {
+        await AndroidRebrand().process(newBundleId);
+        await IoSRebrand().process(newBundleId);
+      }
+      if(newIcon.isNotEmpty){
+        final config = Config(
+          imagePath: newIcon
+        );
+        IoSIconGenerator().createIcons(
+          config
+        );
+         AndroidIconGenerator().createDefaultIcons(config);
+      }
+      if(newAppName.isNotEmpty){
+        await AndroidRebrand().updateAppName(newAppName);
+        await IoSRebrand().overwriteInfoPlist(newAppName);
+      }
     } catch (ex) {
       print('Error reading or parsing JSON: $ex');
     }
