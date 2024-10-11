@@ -1,3 +1,5 @@
+![logo](FAR-logo.png)
+
 # Flutter App Rebrand
 
 **Flutter App Rebrand** automates the process of rebranding a Flutter application by updating the package name, launcher icon, and app name across both Android and iOS platforms. It ensures a smooth transition when you need to rebrand an app for new clients, products, or design overhauls.
