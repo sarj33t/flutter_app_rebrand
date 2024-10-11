@@ -1,4 +1,4 @@
-name: Test Package Functionality
+name: Test Package
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Create rebrand.json
         run: |
-          echo '{"packageName": "new.package.name", "launcherIconPath": "", "appName": "Panda App" }' > test_app/rebrand.json
+          echo '{"packageName": "com.sarj33t.app", "launcherIconPath": "", "appName": "Panda App" }' > test_app/rebrand.json
 
       - name: Run package rename command
         run: |
@@ -45,13 +45,13 @@ jobs:
       - name: Check Android files
         run: |
           cd test_app
-          grep -q "applicationId = \"new.package.name\"" android/app/build.gradle || exit 1
-          grep -q "package new.package.name" android/app/src/main/kotlin/new/package/name/MainActivity.kt || exit 1
+          grep -q "applicationId = \"com.sarj33t.app\"" android/app/build.gradle || exit 1
+          grep -q "package com.sarj33t.app" android/app/src/main/kotlin/com/sarj33t/app/MainActivity.kt || exit 1
 
       - name: Check iOS files
         run: |
           cd test_app
-          grep -q "PRODUCT_BUNDLE_IDENTIFIER = new.package.name" ios/Runner.xcodeproj/project.pbxproj || exit 1
+          grep -q "PRODUCT_BUNDLE_IDENTIFIER = com.sarj33t.app" ios/Runner.xcodeproj/project.pbxproj || exit 1
 
       - name: Run Flutter analyze
         run: |
