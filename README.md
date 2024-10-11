@@ -51,18 +51,13 @@ or run this command
 ```bash
 flutter pub add -d flutter_app_rebrand
 ```
-Not migrated to null safety yet? use old version like this
-```yaml
-dev_dependencies: 
-  flutter_app_rebrand: ^1.0.0
-```
 
 
 Update dependencies
 ```
 flutter pub get
 ```
-Run this command to change the package name for both platforms.
+Run this command to change the package configurations for both the platforms.
 
 ```
 dart run flutter_app_rebrand:main rebrand.json
