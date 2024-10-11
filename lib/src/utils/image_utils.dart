@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:image/image.dart';
+
 ///
 /// @AUTHOR : Sarjeet Sandhu
 /// @DATE : 09/10/24
 /// @Message :
 ///
-class ImageUtils{
+class ImageUtils {
   static final ImageUtils _singleton = ImageUtils._internal();
   ImageUtils._internal();
   static ImageUtils get instance => _singleton;

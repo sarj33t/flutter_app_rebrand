@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 
 /// [FileUtils]
-class FileUtils{
+class FileUtils {
   static final FileUtils _singleton = FileUtils._internal();
   FileUtils._internal();
   static FileUtils get instance => _singleton;
 
   Future<void> replaceInFile(String path, oldPackage, newPackage) async {
     String? contents = await readFileAsString(path);
-    if(contents == null){
+    if (contents == null) {
       print('ERROR:: file at $path not found');
       return;
     }
@@ -20,7 +20,7 @@ class FileUtils{
 
   Future<void> replaceInFileRegex(String path, regex, replacement) async {
     String? contents = await readFileAsString(path);
-    if(contents == null){
+    if (contents == null) {
       print('ERROR:: file at $path not found');
       return;
     }
@@ -43,11 +43,9 @@ class FileUtils{
     await file.writeAsString(contents);
   }
 
-  Future<bool> rebrandJSONExist() async{
+  Future<bool> rebrandJSONExist() async {
     const filePath = FARConstants.rebrandFileKey;
     final File rebrandFile = File(filePath);
     return await rebrandFile.exists();
   }
 }
-
-

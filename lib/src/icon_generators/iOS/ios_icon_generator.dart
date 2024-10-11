@@ -9,18 +9,19 @@ import 'package:image/image.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'models/contents_image.dart';
 import 'models/contents_info.dart';
+
 ///
 /// @AUTHOR : Sarjeet Sandhu
 /// @DATE : 09/10/24
 /// @Message : File to handle the creation of icons for iOS platform
 /// [IoSIconGenerator]
 ///
-class IoSIconGenerator{
+class IoSIconGenerator {
   IoSIconGenerator();
 
   /// Create the ios icons
   void createIcons(Config config) {
-    final String filePath = config.imagePath;
+    final String filePath = config.iconPath;
     if (filePath.isEmpty) {
       throw Exception('Missing Image Path');
     }
@@ -63,15 +64,19 @@ class IoSIconGenerator{
     modifyDefaultContentsFile(iconName);
   }
 
-  void overwriteDefaultIcons(IosIconTemplate template, Image image, [String iconNameSuffix = '']) {
-    final Image newFile = ImageUtils.instance.createResizedImage(template.size, image);
-      // createResizedImage(template, image);
+  void overwriteDefaultIcons(IosIconTemplate template, Image image,
+      [String iconNameSuffix = '']) {
+    final Image newFile =
+        ImageUtils.instance.createResizedImage(template.size, image);
+    // createResizedImage(template, image);
     File('${FARConstants.iosDefaultIconFolder}${FARConstants.iosDefaultIconName}$iconNameSuffix${template.name}.png')
-      .writeAsBytesSync(encodePng(newFile));
+        .writeAsBytesSync(encodePng(newFile));
   }
 
-  void overwriteDefaultImageSets(IosIconTemplate template, Image image, [String iconNameSuffix = '']) {
-    final Image newFile = ImageUtils.instance.createResizedImage(template.size, image);
+  void overwriteDefaultImageSets(IosIconTemplate template, Image image,
+      [String iconNameSuffix = '']) {
+    final Image newFile =
+        ImageUtils.instance.createResizedImage(template.size, image);
     File('${FARConstants.iosDefaultLaunchImageFolder}${FARConstants.iosDefaultLaunchImageName}$iconNameSuffix${template.name}.png')
         .writeAsBytesSync(encodePng(newFile));
   }
@@ -98,8 +103,7 @@ class IoSIconGenerator{
           currentConfig = match.group(1);
         }
 
-        if (currentConfig != null &&
-            line.contains('ASSETCATALOG')) {
+        if (currentConfig != null && line.contains('ASSETCATALOG')) {
           lines[x] = line.replaceAll(RegExp('\=(.*);'), '= $iconName;');
         }
       }
@@ -115,7 +119,7 @@ class IoSIconGenerator{
         '${FARConstants.iosAssetFolder}$newIconName.appiconset/Contents.json';
     File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
       final String contentsFileContent =
-      generateContentsFileAsString(newIconName);
+          generateContentsFileAsString(newIconName);
       contentsJsonFile.writeAsString(contentsFileContent);
     });
   }
@@ -126,7 +130,7 @@ class IoSIconGenerator{
         '${FARConstants.iosAssetFolder}AppIcon.appiconset/Contents.json';
     File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
       final String contentsFileContent =
-      generateContentsFileAsString(newIconName);
+          generateContentsFileAsString(newIconName);
       contentsJsonFile.writeAsString(contentsFileContent);
     });
   }
@@ -144,19 +148,71 @@ class IoSIconGenerator{
   /// Create the image list for the Contents.json file for Xcode versions below Xcode 14
   List<Map<String, dynamic>> createLegacyImageList(String fileNamePrefix) {
     const List<Map<String, dynamic>> imageConfigurations = [
-      {'size': '20x20', 'idiom': 'iphone', 'scales': ['2x', '3x']},
-      {'size': '29x29', 'idiom': 'iphone', 'scales': ['1x', '2x', '3x']},
-      {'size': '40x40', 'idiom': 'iphone', 'scales': ['2x', '3x']},
-      {'size': '57x57', 'idiom': 'iphone', 'scales': ['1x', '2x']},
-      {'size': '60x60', 'idiom': 'iphone', 'scales': ['2x', '3x']},
-      {'size': '20x20', 'idiom': 'ipad', 'scales': ['1x', '2x']},
-      {'size': '29x29', 'idiom': 'ipad', 'scales': ['1x', '2x']},
-      {'size': '40x40', 'idiom': 'ipad', 'scales': ['1x', '2x']},
-      {'size': '50x50', 'idiom': 'ipad', 'scales': ['1x', '2x']},
-      {'size': '72x72', 'idiom': 'ipad', 'scales': ['1x', '2x']},
-      {'size': '76x76', 'idiom': 'ipad', 'scales': ['1x', '2x']},
-      {'size': '83.5x83.5', 'idiom': 'ipad', 'scales': ['2x']},
-      {'size': '1024x1024', 'idiom': 'ios-marketing', 'scales': ['1x']},
+      {
+        'size': '20x20',
+        'idiom': 'iphone',
+        'scales': ['2x', '3x']
+      },
+      {
+        'size': '29x29',
+        'idiom': 'iphone',
+        'scales': ['1x', '2x', '3x']
+      },
+      {
+        'size': '40x40',
+        'idiom': 'iphone',
+        'scales': ['2x', '3x']
+      },
+      {
+        'size': '57x57',
+        'idiom': 'iphone',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '60x60',
+        'idiom': 'iphone',
+        'scales': ['2x', '3x']
+      },
+      {
+        'size': '20x20',
+        'idiom': 'ipad',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '29x29',
+        'idiom': 'ipad',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '40x40',
+        'idiom': 'ipad',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '50x50',
+        'idiom': 'ipad',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '72x72',
+        'idiom': 'ipad',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '76x76',
+        'idiom': 'ipad',
+        'scales': ['1x', '2x']
+      },
+      {
+        'size': '83.5x83.5',
+        'idiom': 'ipad',
+        'scales': ['2x']
+      },
+      {
+        'size': '1024x1024',
+        'idiom': 'ios-marketing',
+        'scales': ['1x']
+      },
     ];
 
     final List<Map<String, dynamic>> imageList = <Map<String, dynamic>>[];

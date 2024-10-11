@@ -4,17 +4,18 @@ import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/icon_generators/android/models/android_icon_template.dart';
 import 'package:flutter_app_rebrand/src/utils/image_utils.dart';
 import 'package:image/image.dart';
+
 ///
 /// @AUTHOR : Sarjeet Sandhu
 /// @DATE : 09/10/24
 /// @Message :
 ///
-class AndroidIconGenerator{
+class AndroidIconGenerator {
   AndroidIconGenerator();
 
   void createDefaultIcons(Config config) {
     print('Creating default icons Android');
-    final String filePath = config.imagePath;
+    final String filePath = config.iconPath;
     if (filePath.isEmpty) {
       throw Exception('Missing Image Path');
     }
@@ -28,11 +29,7 @@ class AndroidIconGenerator{
       'Overwriting the default Android launcher icon with a new icon',
     );
     for (AndroidIconTemplate template in FARConstants.androidIcons) {
-      overwriteExistingIcons(
-        template,
-        image,
-        FARConstants.androidFileName
-      );
+      overwriteExistingIcons(template, image, FARConstants.androidFileName);
     }
     overwriteAndroidManifestWithNewLauncherIcon(
       FARConstants.androidDefaultIconName,
@@ -49,10 +46,11 @@ class AndroidIconGenerator{
     return true;
   }
 
-
   /// Overrides the existing launcher icons in the project
-  void overwriteExistingIcons(AndroidIconTemplate template, Image image, String filename) {
-    final Image newFile = ImageUtils.instance.createResizedImage(template.size, image);
+  void overwriteExistingIcons(
+      AndroidIconTemplate template, Image image, String filename) {
+    final Image newFile =
+        ImageUtils.instance.createResizedImage(template.size, image);
     File(
       '${FARConstants.androidResFolder()}${template.directoryName}/$filename',
     ).create(recursive: true).then((File file) {
@@ -63,14 +61,19 @@ class AndroidIconGenerator{
   /// Updates the line which specifies the launcher icon within the AndroidManifest.xml
   /// with the new icon name (only if it has changed)
   /// Note: default iconName = "ic_launcher"
-  Future<void> overwriteAndroidManifestWithNewLauncherIcon(String iconName, File androidManifestFile) async {
-    final List<String> oldManifestLines = (await androidManifestFile.readAsString()).split('\n');
-    final List<String> transformedLines = _transformAndroidManifestWithNewLauncherIcon(oldManifestLines, iconName);
+  Future<void> overwriteAndroidManifestWithNewLauncherIcon(
+      String iconName, File androidManifestFile) async {
+    final List<String> oldManifestLines =
+        (await androidManifestFile.readAsString()).split('\n');
+    final List<String> transformedLines =
+        _transformAndroidManifestWithNewLauncherIcon(
+            oldManifestLines, iconName);
     await androidManifestFile.writeAsString(transformedLines.join('\n'));
   }
 
   /// Updates only the line containing android:icon with the specified iconName
-  List<String> _transformAndroidManifestWithNewLauncherIcon(List<String> oldManifestLines, String iconName) {
+  List<String> _transformAndroidManifestWithNewLauncherIcon(
+      List<String> oldManifestLines, String iconName) {
     return oldManifestLines.map((String line) {
       if (line.contains('android:icon')) {
         // Using RegExp replace the value of android:icon to point to the new icon
@@ -84,5 +87,3 @@ class AndroidIconGenerator{
     }).toList();
   }
 }
-
-

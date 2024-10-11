@@ -1,4 +1,3 @@
-import '../ios_icon_generator.dart';
 import 'contents_image_appearance.dart';
 
 ///
@@ -30,7 +29,8 @@ class ContentsImageObject {
       'filename': filename,
       'scale': scale,
       if (platform != null) 'platform': platform,
-      if (appearances != null) 'appearances': appearances!.map((e) => e.toJson()).toList(),
+      if (appearances != null)
+        'appearances': appearances!.map((e) => e.toJson()).toList(),
     };
   }
 }

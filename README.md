@@ -42,8 +42,8 @@ where `rebrand.json` is the JSON file contains the new package name, path to the
 ## Example rebrand.json File
 ```
 {
-  "bundleId": "new.bundle.id",
-  "iconPath": "/Users/PATH/TO/ICON/ic_launcher.png",
+  "packageName": "new.bundle.id",
+  "launcherIconPath": "",
   "appName": "New App Name"
 }
 ```

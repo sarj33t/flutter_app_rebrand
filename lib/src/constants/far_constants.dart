@@ -6,12 +6,14 @@ import 'package:flutter_app_rebrand/src/icon_generators/iOS/models/ios_icon_temp
 /// @DATE : 09/10/24
 /// @Message : [FARConstants]
 ///
-class FARConstants{
+class FARConstants {
   /// iOS Specific
   static const String iOSProjectFile = 'ios/Runner.xcodeproj/project.pbxproj';
   static const String iOSPlistFile = 'ios/Runner/Info.plist';
-  static const String iosDefaultIconFolder = 'ios/Runner/Assets.xcassets/AppIcon.appiconset/';
-  static const String iosDefaultLaunchImageFolder = 'ios/Runner/Assets.xcassets/LaunchImage.imageset/';
+  static const String iosDefaultIconFolder =
+      'ios/Runner/Assets.xcassets/AppIcon.appiconset/';
+  static const String iosDefaultLaunchImageFolder =
+      'ios/Runner/Assets.xcassets/LaunchImage.imageset/';
   static const String iosAssetFolder = 'ios/Runner/Assets.xcassets/';
   static const String iosConfigFile = 'ios/Runner.xcodeproj/project.pbxproj';
   static const String iosDefaultIconName = 'Icon-App';
@@ -67,22 +69,29 @@ class FARConstants{
 
   /// Android Specific
   static const String androidAppBuildGradle = 'android/app/build.gradle';
-  static const String androidManifest = 'android/app/src/main/AndroidManifest.xml';
-  static const String androidDebugManifest = 'android/app/src/debug/AndroidManifest.xml';
-  static const String androidProfileManifest = 'android/app/src/profile/AndroidManifest.xml';
+  static const String androidManifest =
+      'android/app/src/main/AndroidManifest.xml';
+  static const String androidDebugManifest =
+      'android/app/src/debug/AndroidManifest.xml';
+  static const String androidProfileManifest =
+      'android/app/src/profile/AndroidManifest.xml';
   static const String androidActivityPath = 'android/app/src/main/';
   static const String androidDrawableResFolder = 'android/app/src/main/res';
   static const int androidDefaultAndroidMinSDK = 21;
   static const String androidFileName = 'ic_launcher.png';
   static const String androidDefaultIconName = 'ic_launcher';
 
-  static const String androidAdaptiveForegroundFileName = 'ic_launcher_foreground.png';
-  static const String androidAdaptiveBackgroundFileName = 'ic_launcher_background.png';
-  static const String androidAdaptiveMonochromeFileName = 'ic_launcher_monochrome.png';
+  static const String androidAdaptiveForegroundFileName =
+      'ic_launcher_foreground.png';
+  static const String androidAdaptiveBackgroundFileName =
+      'ic_launcher_background.png';
+  static const String androidAdaptiveMonochromeFileName =
+      'ic_launcher_monochrome.png';
 
   static String androidResFolder() => 'android/app/src/main/res/';
 
-  static final List<AndroidIconTemplate> adaptiveForegroundIcons = <AndroidIconTemplate>[
+  static final List<AndroidIconTemplate> adaptiveForegroundIcons =
+      <AndroidIconTemplate>[
     AndroidIconTemplate(directoryName: 'drawable-mdpi', size: 108),
     AndroidIconTemplate(directoryName: 'drawable-hdpi', size: 162),
     AndroidIconTemplate(directoryName: 'drawable-xhdpi', size: 216),
@@ -102,5 +111,13 @@ class FARConstants{
   static const launcherIconPathKey = 'launcherIconPath';
   static const appNameKey = 'appName';
   static const rebrandFileKey = 'rebrand.json';
-}
+  static const packageNameStringError = 'Package name must be String';
+  static const launcherIconPathStringError =
+      'Launcher Icon path must be String';
+  static const appNameStringError = 'App Name must be String';
 
+  static const String version = 'version';
+  static const String author = 'author';
+  static const String appearance = 'appearance';
+  static const String value = 'value';
+}

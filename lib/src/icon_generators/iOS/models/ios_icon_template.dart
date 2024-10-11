@@ -4,8 +4,10 @@
 /// @Message :
 /// [IosIconTemplate]
 class IosIconTemplate {
-  /// constructs an instance of [IosIconTemplate]
-  IosIconTemplate({required this.size, required this.name});
+  IosIconTemplate({
+    required this.size,
+    required this.name
+  });
 
   /// suffix of the icon name
   final String name;

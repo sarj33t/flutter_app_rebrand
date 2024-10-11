@@ -29,15 +29,19 @@ class FlutterAppRebrand {
   }
 
   /// Process to rebrand the application
-  static Future<void> _processToRebrandApp() async{
+  static Future<void> _processToRebrandApp() async {
     try {
       // Parse the JSON
-      final String contents = await File(FARConstants.rebrandFileKey).readAsString();
+      final String contents =
+          await File(FARConstants.rebrandFileKey).readAsString();
       final data = jsonDecode(contents);
 
-      assert(data[FARConstants.packageNameKey] is String, 'Package name must be String');
-      assert(data[FARConstants.launcherIconPathKey] is String, 'Launcher Icon path must be String');
-      assert(data[FARConstants.appNameKey] is String, 'App Name must be String');
+      assert(data[FARConstants.packageNameKey] is String,
+          FARConstants.packageNameStringError);
+      assert(data[FARConstants.launcherIconPathKey] is String,
+          FARConstants.launcherIconPathStringError);
+      assert(data[FARConstants.appNameKey] is String,
+          FARConstants.appNameStringError);
 
       // Extract fields from JSON
       final String newPackageName = data[FARConstants.packageNameKey];
@@ -45,19 +49,17 @@ class FlutterAppRebrand {
       final String newAppName = data[FARConstants.appNameKey];
 
       if (newPackageName.isNotEmpty) {
-        await AndroidRebrand().process(newPackageName);
-        await IoSRebrand().process(newPackageName);
+        await AndroidRebrand.instance.process(newPackageName);
+        await IoSRebrand.instance.process(newPackageName);
       }
-      if(newLauncherIcon.isNotEmpty){
-        final config = Config(
-            imagePath: newLauncherIcon
-        );
+      if (newLauncherIcon.isNotEmpty) {
+        final config = Config(iconPath: newLauncherIcon);
         IoSIconGenerator().createIcons(config);
         AndroidIconGenerator().createDefaultIcons(config);
       }
-      if(newAppName.isNotEmpty){
-        await AndroidRebrand().updateAppName(newAppName);
-        await IoSRebrand().overwriteInfoPlist(newAppName);
+      if (newAppName.isNotEmpty) {
+        await AndroidRebrand.instance.updateAppName(newAppName);
+        await IoSRebrand.instance.overwriteInfoPlist(newAppName);
       }
     } catch (ex) {
       print('Error reading or parsing JSON: $ex');

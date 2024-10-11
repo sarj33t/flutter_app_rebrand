@@ -4,12 +4,13 @@ import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
 class AndroidRebrand {
-  AndroidRebrand();
-
-  String? oldPackageName;
+  static final AndroidRebrand _singleton = AndroidRebrand._internal();
+  AndroidRebrand._internal();
+  static AndroidRebrand get instance => _singleton;
 
   // Path to your Flutter project's Android res directory
-  final resDirectory = Directory(FARConstants.androidDrawableResFolder);
+  final Directory resDirectory =
+      Directory(FARConstants.androidDrawableResFolder);
 
   // List of folders where the ic_launcher.png file should be replaced
   final directories = [
@@ -25,37 +26,47 @@ class AndroidRebrand {
   Future<void> process(String newPackageName) async {
     print("Running for android");
     if (!await File(FARConstants.androidAppBuildGradle).exists()) {
-      print('ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
+      print(
+          'ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
           '\n\nrun " flutter create . " to regenerate missing files.');
       return;
     }
-    String? contents = await FileUtils.instance.readFileAsString(FARConstants.androidAppBuildGradle);
+    String? contents = await FileUtils.instance
+        .readFileAsString(FARConstants.androidAppBuildGradle);
 
-    var reg = RegExp(r'applicationId\s*=?\s*"(.*)"', caseSensitive: true, multiLine: false);
+    var reg = RegExp(r'applicationId\s*=?\s*"(.*)"',
+        caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
-    if(match == null) {
-      print('ERROR:: applicationId not found in build.gradle file, Please file an issue on github with ${FARConstants.androidAppBuildGradle} file attached.');
+    if (match == null) {
+      print(
+          'ERROR:: applicationId not found in build.gradle file, '
+          'Please file an issue on github with '
+          '${FARConstants.androidAppBuildGradle} file attached.');
       return;
     }
     var name = match.group(1);
-    oldPackageName = name;
+    final String? oldPackageName = name;
 
     print("Old Package Name: $oldPackageName");
 
     print('Updating build.gradle File');
-    await _replace(FARConstants.androidAppBuildGradle, newPackageName);
+    await _replace(
+        FARConstants.androidAppBuildGradle, newPackageName, oldPackageName);
 
     var mText = 'package="$newPackageName">';
     var mRegex = '(package=.*)';
 
     print('Updating Main Manifest file');
-    await FileUtils.instance.replaceInFileRegex(FARConstants.androidManifest, mRegex, mText);
+    await FileUtils.instance
+        .replaceInFileRegex(FARConstants.androidManifest, mRegex, mText);
 
     print('Updating Debug Manifest file');
-    await FileUtils.instance.replaceInFileRegex(FARConstants.androidDebugManifest, mRegex, mText);
+    await FileUtils.instance
+        .replaceInFileRegex(FARConstants.androidDebugManifest, mRegex, mText);
 
     print('Updating Profile Manifest file');
-    await FileUtils.instance.replaceInFileRegex(FARConstants.androidProfileManifest, mRegex, mText);
+    await FileUtils.instance
+        .replaceInFileRegex(FARConstants.androidProfileManifest, mRegex, mText);
 
     await updateMainActivity(newPackageName);
     print('Finished updating android package name');
@@ -73,7 +84,8 @@ class AndroidRebrand {
     }
   }
 
-  Future<void> processMainActivity(File path, String type, String newPackageName) async {
+  Future<void> processMainActivity(
+      File path, String type, String newPackageName) async {
     var extension = type == 'java' ? 'java' : 'kt';
     print('Project is using $type');
     print('Updating MainActivity.$extension');
@@ -92,13 +104,16 @@ class AndroidRebrand {
     await deleteEmptyDirs(type);
   }
 
-  Future<void> _replace(String path, String newPackageName) async {
-    await FileUtils.instance.replaceInFile(path, oldPackageName, newPackageName);
+  Future<void> _replace(
+      String path, String newPackageName, String? oldPackageName) async {
+    await FileUtils.instance
+        .replaceInFile(path, oldPackageName, newPackageName);
   }
 
   /// Delete .DStore file for macOS & Empty dirs
   Future<void> deleteEmptyDirs(String type) async {
-    var dirs = await dirContents(Directory(FARConstants.androidActivityPath + type));
+    var dirs =
+        await dirContents(Directory(FARConstants.androidActivityPath + type));
     dirs = dirs.reversed.toList();
     for (var dir in dirs) {
       if (dir is Directory) {
@@ -113,12 +128,12 @@ class AndroidRebrand {
             }
           }
         });
-        
+
         /// Proceed to delete empty dirs
-        if(dir.listSync().isEmpty){
-          try{
+        if (dir.listSync().isEmpty) {
+          try {
             dir.deleteSync();
-          }catch(ex){
+          } catch (ex) {
             print('Error deleting dir: $dir, Error: $ex');
           }
         }
@@ -127,7 +142,8 @@ class AndroidRebrand {
   }
 
   Future<File?> findMainActivity({String type = 'java'}) async {
-    var files = await dirContents(Directory(FARConstants.androidActivityPath + type));
+    var files =
+        await dirContents(Directory(FARConstants.androidActivityPath + type));
     String extension = type == 'java' ? 'java' : 'kt';
     for (var item in files) {
       if (item is File) {
@@ -140,7 +156,7 @@ class AndroidRebrand {
   }
 
   Future<List<FileSystemEntity>> dirContents(Directory dir) {
-    if(!dir.existsSync()) return Future.value([]);
+    if (!dir.existsSync()) return Future.value([]);
     var files = <FileSystemEntity>[];
     var completer = Completer<List<FileSystemEntity>>();
     var lister = dir.list(recursive: true);
@@ -151,7 +167,7 @@ class AndroidRebrand {
   }
 
   /// Updates Launcher Icons under drawable dirs
-  Future<void> updateIcon(String path) async{
+  Future<void> updateIcon(String path) async {
     final newImageFile = File(path);
     // Replace ic_launcher.png in all the specified directories
     for (var dir in directories) {
@@ -175,7 +191,7 @@ class AndroidRebrand {
       String line = lines[x];
       if (line.contains('android:label')) {
         line = line.replaceAll(RegExp(r'android:label="[^"]*(\\"[^"]*)*"'),
-          'android:label="$name"');
+            'android:label="$name"');
         lines[x] = line;
         lines.add('');
       }

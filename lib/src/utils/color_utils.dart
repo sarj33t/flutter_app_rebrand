@@ -7,14 +7,15 @@ import 'package:flutter_app_rebrand/src/configs/config.dart';
 /// @Message :
 /// [ColorUtils]
 ///
-class ColorUtils{
+class ColorUtils {
   static final ColorUtils _singleton = ColorUtils._internal();
   ColorUtils._internal();
   static ColorUtils get instance => _singleton;
 
   ColorUint8 getBackgroundColor(Config config) {
     final backgroundColorHex = config.backgroundColorIOS.startsWith('#')
-      ? config.backgroundColorIOS.substring(1) : config.backgroundColorIOS;
+        ? config.backgroundColorIOS.substring(1)
+        : config.backgroundColorIOS;
     if (backgroundColorHex.length != 6) {
       throw Exception('background_color_ios hex should be 6 characters long');
     }
