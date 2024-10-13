@@ -1,3 +1,3 @@
-## 1.0.0
+## 1.0.1
 
-* Flutter App Rebrand - Init Upload
+* Flutter App Rebrand - Added logo

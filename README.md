@@ -1,4 +1,4 @@
-![logo](FAR-logo.png)
+![FARLogo](https://raw.githubusercontent.com/sarj33t/flutter_app_rebrand/main/FAR-logo.png)
 
 # Flutter App Rebrand
 
