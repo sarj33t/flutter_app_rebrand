@@ -12,6 +12,8 @@ import 'src/icon_generators/iOS/ios_icon_generator.dart';
 
 /// [FlutterAppRebrand]
 class FlutterAppRebrand {
+  /// Start the process to rebrand application with
+  /// the provided rebrand.json file
   static Future<void> init(List<String> args) async {
     // Check if there are no arguments passed
     if (args.isEmpty) {
