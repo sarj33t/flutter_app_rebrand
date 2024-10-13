@@ -24,6 +24,7 @@ jobs:
       - name: Create a new Flutter project
         run: |
           flutter create test_app
+          cp FAR-logo.png ./test_app
           cd test_app
 
       # STEP: 4 - Adds flutter_app_rebrand package to pubspec YAML
