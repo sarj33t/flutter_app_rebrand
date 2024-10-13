@@ -27,7 +27,7 @@ This package uses a configuration file (`rebrand.json`) to automatically apply a
 
 ### Configuration File (`rebrand.json`)
 
-The `rebrand.json` file should include the following keys:
+Create a file called `rebrand.json` in your Flutter project's root directory. This file should include the following keys with valid values:
 - `packageName`: The new package name (e.g., `com.newcompany.newapp`).
 - `launcherIconPath`: Path to the new launcher icon (e.g., `assets/icons/new_launcher_icon.png`).
 - `appName`: The new app name (e.g., `NewApp`).
