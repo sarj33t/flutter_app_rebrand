@@ -41,6 +41,7 @@ jobs:
 
       # STEP: 6 - Creates a JSON called rebrand.JSON that our
         # package requires in project's root dir
+
       - name: Create rebrand.json
         run: |
           echo '{"packageName": "com.sarj33t.app", "launcherIconPath": "FAR-logo.png",
