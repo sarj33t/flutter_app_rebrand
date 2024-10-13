@@ -38,8 +38,7 @@ class AndroidRebrand {
         caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match == null) {
-      print(
-          'ERROR:: applicationId not found in build.gradle file, '
+      print('ERROR:: applicationId not found in build.gradle file, '
           'Please file an issue on github with '
           '${FARConstants.androidAppBuildGradle} file attached.');
       return;

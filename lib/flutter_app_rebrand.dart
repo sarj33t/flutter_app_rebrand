@@ -3,7 +3,7 @@ library flutter_app_rebrand;
 import 'dart:convert';
 import 'package:flutter_app_rebrand/src/configs/android_rebrand.dart';
 import 'package:flutter_app_rebrand/src/configs/config.dart';
-import 'package:flutter_app_rebrand/src/configs/iOS_rebrand.dart';
+import 'package:flutter_app_rebrand/src/configs/ios_rebrand.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/icon_generators/android/android_icon_generator.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';

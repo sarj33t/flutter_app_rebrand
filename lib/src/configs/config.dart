@@ -8,9 +8,8 @@ class Config {
   final bool removeAlphaIOS;
   final String backgroundColorIOS;
 
-  Config({
-    required this.iconPath,
-    this.removeAlphaIOS = true,
-    this.backgroundColorIOS = '#FFFFFF'
-  });
+  Config(
+      {required this.iconPath,
+      this.removeAlphaIOS = true,
+      this.backgroundColorIOS = '#FFFFFF'});
 }
