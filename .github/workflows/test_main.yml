@@ -1,0 +1,86 @@
+name: Test Package
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  test_package_functionality:
+    runs-on: ubuntu-latest
+
+    steps:
+      # STEP: 1 - Checkout latest version of repo on Git Runner
+      - uses: actions/checkout@v4.2.1
+
+      # STEP: 2 - Setup Flutter - stable
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.16.0
+        with:
+          channel: stable
+
+      # STEP: 3 - Creates a new flutter project on ubuntu machine
+      - name: Create a new Flutter project
+        run: |
+          flutter create test_app
+          cp FAR-logo.png ./test_app
+          cd test_app
+
+      # STEP: 4 - Adds flutter_app_rebrand package to pubspec YAML
+      - name: Add your package to pubspec.yaml
+        run: |
+          cd test_app
+          sed -i '/dev_dependencies:/a\  flutter_app_rebrand:\n    path: ../' pubspec.yaml
+
+      # STEP: 5 - Run Clean and Get Dependencies
+      - name: Get dependencies
+        run: |
+          cd test_app
+          flutter pub get
+
+      # STEP: 6 - Creates a JSON called rebrand.JSON that our
+        # package requires in project's root dir
+
+      - name: Create rebrand.json
+        run: |
+          echo '{"packageName": "com.sarj33t.app", "launcherIconPath": "FAR-logo.png",
+          "appName": "Panda App" }' > test_app/rebrand.json
+
+      # STEP: 7 - Run the rebranding command
+      - name: Run package rebrand command
+        run: |
+          cd test_app
+          dart run flutter_app_rebrand:main rebrand.json
+
+      # STEP: 8 - Check Android files are updated
+      - name: Check Android files
+        run: |
+          cd test_app
+          grep -q "applicationId = \"com.sarj33t.app\"" android/app/build.gradle || exit 1
+          grep -q "package com.sarj33t.app" android/app/src/main/kotlin/com/sarj33t/app/MainActivity.kt || exit 1
+
+      # STEP: 9 - Check iOS files are updated
+      - name: Check iOS files
+        run: |
+          cd test_app
+          grep -q "PRODUCT_BUNDLE_IDENTIFIER = com.sarj33t.app" ios/Runner.xcodeproj/project.pbxproj || exit 1
+
+      # STEP: 10 - Run analysis for any issue
+      - name: Run Flutter analyze
+        run: |
+          cd test_app
+          flutter analyze
+
+      # STEP: 11 - Generate Debug APK file
+      - name: Build APK to verify
+        run: |
+          cd test_app
+          flutter build apk --debug
+
+      # STEP: 12 - Upload Debug APK file
+      -  name: Upload app bundle as artifact
+         uses: actions/upload-artifact@v4.4.3
+         with:
+           name: Panda App
+           path: test_app/build/app/outputs/flutter-apk/app-debug.apk
