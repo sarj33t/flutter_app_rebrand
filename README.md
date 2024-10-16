@@ -81,3 +81,9 @@ Distributed under the MIT license.
 3. Commit your changes with a descriptive message (`git commit -am 'Add new feature: your-feature-name''`)
 4. Push to the branch (`git push origin feature/your-feature-name`)
 5. Open a Pull Request and submit it for review.
+
+## Support
+
+If you find my work useful and would like to support me, you can buy me a coffee! ☕️
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/sarj33t)
