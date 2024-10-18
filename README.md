@@ -67,6 +67,12 @@ dart run flutter_app_rebrand:main rebrand.json
 
 where `rebrand.json` is the JSON file that contains the new package name, path to the new launcher icon, and the updated app name.
 
+## YouTube Video Guide
+
+For a step-by-step video guide on how to use **Flutter App Rebrand**, watch this YouTube video:
+
+[![Watch the video](https://img.youtube.com/vi/qMqxev7-gV4/maxresdefault.jpg)](https://www.youtube.com/watch?v=qMqxev7-gV4)
+
 
 ## Meta
 
