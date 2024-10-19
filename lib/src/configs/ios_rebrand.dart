@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_app_rebrand/src/constants/ansi_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
@@ -11,11 +12,11 @@ class IoSRebrand {
   static IoSRebrand get instance => _singleton;
 
   Future<void> process(String newPackageName) async {
-    print("Running for ios");
+    print('${green}Running for iOS${reset}');
     if (!await File(FARConstants.iOSProjectFile).exists()) {
-      print('ERROR:: project.pbxproj file not found, '
+      print('${red}ERROR:: project.pbxproj file not found, '
           'Check if you have a correct ios directory present in your project'
-          '\n\nrun " flutter create . " to regenerate missing files.');
+          '\n\nrun " flutter create . " to regenerate missing files.${reset}');
       return;
     }
     String? contents =
@@ -25,9 +26,10 @@ class IoSRebrand {
         caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match == null) {
-      print('ERROR:: Bundle Identifier not found in project.pbxproj file, '
+      print(
+          '${red}ERROR:: Bundle Identifier not found in project.pbxproj file, '
           'Please file an issue on github with ${FARConstants.iOSProjectFile} '
-          'file attached.');
+          'file attached.${reset}');
       return;
     }
     var name = match.group(1);

@@ -13,7 +13,7 @@ import 'package:image/image.dart';
 class AndroidIconGenerator {
   AndroidIconGenerator();
 
-  void createDefaultIcons(Config config) {
+  Future<void> createDefaultIcons(Config config) async {
     print('Creating default icons Android');
     final String filePath = config.iconPath;
     if (filePath.isEmpty) {
@@ -31,7 +31,7 @@ class AndroidIconGenerator {
     for (AndroidIconTemplate template in FARConstants.androidIcons) {
       overwriteExistingIcons(template, image, FARConstants.androidFileName);
     }
-    overwriteAndroidManifestWithNewLauncherIcon(
+    await overwriteAndroidManifestWithNewLauncherIcon(
       FARConstants.androidDefaultIconName,
       androidManifestFile,
     );

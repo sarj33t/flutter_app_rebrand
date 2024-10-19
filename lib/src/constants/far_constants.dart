@@ -110,14 +110,23 @@ class FARConstants {
   static const packageNameKey = 'packageName';
   static const launcherIconPathKey = 'launcherIconPath';
   static const appNameKey = 'appName';
-  static const rebrandFileKey = 'rebrand.json';
+  static const rebrandFileKey = 'rebrand_config.json';
   static const packageNameStringError = 'Package name must be String';
   static const launcherIconPathStringError =
       'Launcher Icon path must be String';
   static const appNameStringError = 'App Name must be String';
 
-  static const String version = 'version';
-  static const String author = 'author';
-  static const String appearance = 'appearance';
-  static const String value = 'value';
+  // Define the platform-specific configurations
+  static final Map<String, dynamic> defaultConfig = {
+    "ios": {
+      "packageName": "com.sarj33t.app",
+      "launcherIconPath": "../FAR-logo.png",
+      "appName": "Panda"
+    },
+    "android": {
+      "packageName": "com.sarj33t.app",
+      "launcherIconPath": "../FAR-logo.png",
+      "appName": "Panda"
+    }
+  };
 }
