@@ -1,4 +1,4 @@
-library asci_constants;
+library ansi_constants;
 
 const String red = '\x1B[31m';
 const String green = '\x1B[32m';

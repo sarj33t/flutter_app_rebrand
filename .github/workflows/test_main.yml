@@ -42,16 +42,29 @@ jobs:
       # STEP: 6 - Creates a JSON called rebrand.JSON that our
         # package requires in project's root dir
 
-      - name: Create rebrand.json
-        run: |
-          echo '{"packageName": "com.sarj33t.app", "launcherIconPath": "FAR-logo.png",
-          "appName": "Panda App" }' > test_app/rebrand.json
+#      - name: Create rebrand.json
+#        run: |
+#          echo '
+#          {
+#            "ios": {
+#              "packageName": "com.sarj33t.panda",
+#              "launcherIconPath": "../FAR-logo.png",
+#              "appName": "Panda"
+#            },
+#            "android": {
+#              "packageName": "com.sarj33t.panda",
+#              "launcherIconPath": "../FAR-logo.png",
+#              "appName": "Panda"
+#            }
+#          }
+#          ' > test_app/rebrand_config.json
 
       # STEP: 7 - Run the rebranding command
       - name: Run package rebrand command
         run: |
           cd test_app
-          dart run flutter_app_rebrand:main rebrand.json
+          dart run flutter_app_rebrand:build
+          dart run flutter_app_rebrand
 
       # STEP: 8 - Check Android files are updated
       - name: Check Android files

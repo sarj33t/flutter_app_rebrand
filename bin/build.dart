@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:flutter_app_rebrand/src/constants/asci_constants.dart';
+import 'package:flutter_app_rebrand/src/constants/ansi_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 
 void main() {

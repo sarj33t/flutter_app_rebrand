@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_app_rebrand/src/configs/android_rebrand.dart';
 import 'package:flutter_app_rebrand/src/configs/config.dart';
 import 'package:flutter_app_rebrand/src/configs/ios_rebrand.dart';
-import 'package:flutter_app_rebrand/src/constants/asci_constants.dart';
+import 'package:flutter_app_rebrand/src/constants/ansi_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/icon_generators/android/android_icon_generator.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
@@ -23,7 +23,6 @@ class FlutterAppRebrand {
       return;
     }else{
       print('${green}${checkMark} Found JSON file in project\'s root dir ${checkMark}$reset');
-      print('');
       _processToRebrandApp();
     }
   }
@@ -44,24 +43,13 @@ class FlutterAppRebrand {
       final Map<String, dynamic> iosConfig = config['ios']?? <String, dynamic>{};
       final Map<String, dynamic> androidConfig = config['android']?? <String, dynamic>{};
 
-      if(iosConfig.isNotEmpty){
-        // Print iOS configuration
-        print('${green}iOS Configuration:${reset}');
-        print('${yellow}PackageName: ${iosConfig['packageName']}${reset}');
-        print('${yellow}LauncherIconPath: ${iosConfig['launcherIconPath']}${reset}');
-        print('${yellow}AppName: ${iosConfig['appName']}${reset}');
-        print(''); // Blank line for separation
-        await _extractFields(iosConfig, TargetPlatform.ios);
-      }
       if(androidConfig.isNotEmpty){
-        // Print Android configuration
-        print('');
-        print('${green}Android Configuration:${reset}');
-        print('${yellow}PackageName: ${androidConfig['packageName']}${reset}');
-        print('${yellow}LauncherIconPath: ${androidConfig['launcherIconPath']}${reset}');
-        print('${yellow}AppName: ${androidConfig['appName']}${reset}');
-        print('');
+        prettyPrint(androidConfig, TargetPlatform.android);
         await _extractFields(androidConfig, TargetPlatform.android);
+      }
+      if(iosConfig.isNotEmpty){
+        prettyPrint(iosConfig, TargetPlatform.ios);
+        await _extractFields(iosConfig, TargetPlatform.ios);
       }
     } catch (ex) {
       print('Error reading or parsing JSON: $ex');
@@ -110,6 +98,18 @@ class FlutterAppRebrand {
   /// Log Console Error Message
   static void _logError(TargetPlatform platform, Object ex, String property) {
     print('${red}Error occurred while updating $property for ${platform.name.toUpperCase()} \nDetails => $ex${reset}');
+  }
+
+  /// Pretty Print Lines
+  static void prettyPrint(Map<String, dynamic> config, TargetPlatform platform){
+    print('');
+    print('${green}${bold}========================================');
+    print('${green}${platform.name} Configuration:${reset}');
+    print('${green}${bold}========================================$reset');
+    print('${yellow}PackageName: ${config['packageName']}${reset}');
+    print('${yellow}LauncherIconPath: ${config['launcherIconPath']}${reset}');
+    print('${yellow}AppName: ${config['appName']}${reset}');
+    print(''); // Blank line for separation
   }
 }
 

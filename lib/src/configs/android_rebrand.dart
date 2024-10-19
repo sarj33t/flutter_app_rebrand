@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter_app_rebrand/src/constants/asci_constants.dart';
+import 'package:flutter_app_rebrand/src/constants/ansi_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
