@@ -13,7 +13,7 @@ import 'package:image/image.dart';
 class AndroidIconGenerator {
   AndroidIconGenerator();
 
-  Future<void> createDefaultIcons(Config config) async{
+  Future<void> createDefaultIcons(Config config) async {
     print('Creating default icons Android');
     final String filePath = config.iconPath;
     if (filePath.isEmpty) {

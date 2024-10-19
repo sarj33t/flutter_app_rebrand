@@ -124,7 +124,8 @@ class AndroidRebrand {
               entity.deleteSync();
               print('Deleted: ${entity.path}');
             } catch (ex) {
-              print('${red}Error deleting file: ${entity.path}, Error: $ex${reset}');
+              print(
+                  '${red}Error deleting file: ${entity.path}, Error: $ex${reset}');
             }
           }
         });

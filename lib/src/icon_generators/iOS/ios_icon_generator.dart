@@ -20,7 +20,7 @@ class IoSIconGenerator {
   IoSIconGenerator();
 
   /// Create the ios icons
-  Future<void> createIcons(Config config) async{
+  Future<void> createIcons(Config config) async {
     final String filePath = config.iconPath;
     if (filePath.isEmpty) {
       throw Exception('Missing Image Path');
@@ -125,10 +125,12 @@ class IoSIconGenerator {
   }
 
   /// Modify default Contents.json file
-  Future<void> modifyDefaultContentsFile(String newIconName) async{
+  Future<void> modifyDefaultContentsFile(String newIconName) async {
     const String newIconFolder =
         '${FARConstants.iosAssetFolder}AppIcon.appiconset/Contents.json';
-    await File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
+    await File(newIconFolder)
+        .create(recursive: true)
+        .then((File contentsJsonFile) {
       final String contentsFileContent =
           generateContentsFileAsString(newIconName);
       contentsJsonFile.writeAsString(contentsFileContent);

@@ -19,10 +19,12 @@ class FlutterAppRebrand {
     // Check if rebrand.json file exists
     final bool fileExist = await FileUtils.instance.rebrandJSONExist();
     if (!fileExist) {
-      print('${red}Error: ${FARConstants.rebrandFileKey} file not found. $reset');
+      print(
+          '${red}Error: ${FARConstants.rebrandFileKey} file not found. $reset');
       return;
-    }else{
-      print('${green}${checkMark} Found JSON file in project\'s root dir ${checkMark}$reset');
+    } else {
+      print(
+          '${green}${checkMark} Found JSON file in project\'s root dir ${checkMark}$reset');
       _processToRebrandApp();
     }
   }
@@ -40,14 +42,16 @@ class FlutterAppRebrand {
       final Map<String, dynamic> config = jsonDecode(jsonString);
 
       // Access platform-specific information
-      final Map<String, dynamic> iosConfig = config['ios']?? <String, dynamic>{};
-      final Map<String, dynamic> androidConfig = config['android']?? <String, dynamic>{};
+      final Map<String, dynamic> iosConfig =
+          config['ios'] ?? <String, dynamic>{};
+      final Map<String, dynamic> androidConfig =
+          config['android'] ?? <String, dynamic>{};
 
-      if(androidConfig.isNotEmpty){
+      if (androidConfig.isNotEmpty) {
         prettyPrint(androidConfig, TargetPlatform.android);
         await _extractFields(androidConfig, TargetPlatform.android);
       }
-      if(iosConfig.isNotEmpty){
+      if (iosConfig.isNotEmpty) {
         prettyPrint(iosConfig, TargetPlatform.ios);
         await _extractFields(iosConfig, TargetPlatform.ios);
       }
@@ -57,51 +61,66 @@ class FlutterAppRebrand {
   }
 
   /// Extract Fields from JSON
-  static Future<void> _extractFields(Map<String, dynamic> config, TargetPlatform platform) async{
+  static Future<void> _extractFields(
+      Map<String, dynamic> config, TargetPlatform platform) async {
     // Extract fields from JSON
     final String newPackageName = config[FARConstants.packageNameKey];
     final String newLauncherIcon = config[FARConstants.launcherIconPathKey];
     final String newAppName = config[FARConstants.appNameKey];
 
     /// Package Name Update
-    if (newPackageName.isNotEmpty){
-      try{
-        platform == TargetPlatform.android? await AndroidRebrand.instance.process(newPackageName):
-        platform == TargetPlatform.ios? await IoSRebrand.instance.process(newPackageName): null;
-      } catch(ex){
+    if (newPackageName.isNotEmpty) {
+      try {
+        platform == TargetPlatform.android
+            ? await AndroidRebrand.instance.process(newPackageName)
+            : platform == TargetPlatform.ios
+                ? await IoSRebrand.instance.process(newPackageName)
+                : null;
+      } catch (ex) {
         _logError(platform, ex, 'Package Name');
-      };
+      }
+      ;
     }
 
     /// Launcher Icon Update
-    if (newLauncherIcon.isNotEmpty){
+    if (newLauncherIcon.isNotEmpty) {
       final Config config = Config(iconPath: newLauncherIcon);
-      try{
-        platform == TargetPlatform.android? await AndroidIconGenerator().createDefaultIcons(config):
-        platform == TargetPlatform.ios? await IoSIconGenerator().createIcons(config): null;
-      }catch(ex){
+      try {
+        platform == TargetPlatform.android
+            ? await AndroidIconGenerator().createDefaultIcons(config)
+            : platform == TargetPlatform.ios
+                ? await IoSIconGenerator().createIcons(config)
+                : null;
+      } catch (ex) {
         _logError(platform, ex, 'Launcher Icon');
-      };
+      }
+      ;
     }
 
     /// App Name Update
-    if (newAppName.isNotEmpty){
-      try{
-        platform == TargetPlatform.android? await AndroidRebrand.instance.updateAppName(newAppName):
-        platform == TargetPlatform.ios? await IoSRebrand.instance.overwriteInfoPlist(newAppName): null;
-      }catch(ex){
+    if (newAppName.isNotEmpty) {
+      try {
+        platform == TargetPlatform.android
+            ? await AndroidRebrand.instance.updateAppName(newAppName)
+            : platform == TargetPlatform.ios
+                ? await IoSRebrand.instance.overwriteInfoPlist(newAppName)
+                : null;
+      } catch (ex) {
         _logError(platform, ex, 'App Name');
-      };
+      }
+      ;
     }
   }
 
   /// Log Console Error Message
   static void _logError(TargetPlatform platform, Object ex, String property) {
-    print('${red}Error occurred while updating $property for ${platform.name.toUpperCase()} \nDetails => $ex${reset}');
+    print(
+        '${red}Error occurred while updating $property for ${platform.name.toUpperCase()} \nDetails => $ex${reset}');
   }
 
   /// Pretty Print Lines
-  static void prettyPrint(Map<String, dynamic> config, TargetPlatform platform){
+  static void prettyPrint(
+      Map<String, dynamic> config, TargetPlatform platform) {
     print('');
     print('${green}${bold}========================================');
     print('${green}${platform.name} Configuration:${reset}');
@@ -114,7 +133,4 @@ class FlutterAppRebrand {
 }
 
 /// Target Platform
-enum TargetPlatform{
-  android,
-  ios
-}
+enum TargetPlatform { android, ios }

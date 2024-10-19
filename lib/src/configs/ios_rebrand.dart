@@ -26,7 +26,8 @@ class IoSRebrand {
         caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match == null) {
-      print('${red}ERROR:: Bundle Identifier not found in project.pbxproj file, '
+      print(
+          '${red}ERROR:: Bundle Identifier not found in project.pbxproj file, '
           'Please file an issue on github with ${FARConstants.iOSProjectFile} '
           'file attached.${reset}');
       return;
