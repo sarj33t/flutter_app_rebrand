@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_app_rebrand/src/constants/asci_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
@@ -24,11 +25,11 @@ class AndroidRebrand {
   ];
 
   Future<void> process(String newPackageName) async {
-    print("Running for android");
+    print('${green}Running for Android${reset}');
     if (!await File(FARConstants.androidAppBuildGradle).exists()) {
       print(
-          'ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
-          '\n\nrun " flutter create . " to regenerate missing files.');
+          '${red}ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
+          '\n\nrun " flutter create . " to regenerate missing files.${reset}');
       return;
     }
     String? contents = await FileUtils.instance
@@ -38,9 +39,9 @@ class AndroidRebrand {
         caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match == null) {
-      print('ERROR:: applicationId not found in build.gradle file, '
+      print('${red}ERROR:: applicationId not found in build.gradle file, '
           'Please file an issue on github with '
-          '${FARConstants.androidAppBuildGradle} file attached.');
+          '${FARConstants.androidAppBuildGradle} file attached.${reset}');
       return;
     }
     var name = match.group(1);
@@ -123,7 +124,7 @@ class AndroidRebrand {
               entity.deleteSync();
               print('Deleted: ${entity.path}');
             } catch (ex) {
-              print('Error deleting file: ${entity.path}, Error: $ex');
+              print('${red}Error deleting file: ${entity.path}, Error: $ex${reset}');
             }
           }
         });
@@ -133,7 +134,7 @@ class AndroidRebrand {
           try {
             dir.deleteSync();
           } catch (ex) {
-            print('Error deleting dir: $dir, Error: $ex');
+            print('${red}Error deleting dir: $dir, Error: $ex${reset}');
           }
         }
       }
@@ -177,7 +178,7 @@ class AndroidRebrand {
         // Replace the existing file with the new image
         newImageFile.copySync(targetPath);
       } else {
-        print('File not found: $targetPath');
+        print('${red}File not found: $targetPath${reset}');
       }
     }
   }
