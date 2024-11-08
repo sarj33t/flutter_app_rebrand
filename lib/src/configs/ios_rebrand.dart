@@ -72,5 +72,38 @@ class IoSRebrand {
     // Write the updated content back to the file
     await file.writeAsString(updatedContent);
     print('Plist file updated successfully.');
+
+    await makeChangesInPbxProj(name);
+  }
+
+  /// Updates CFBundleDisplayName in PbxProj file
+  Future<void> makeChangesInPbxProj(String newAppName) async {
+    if (!await File(FARConstants.iOSProjectFile).exists()) {
+      print('ERROR:: project.pbxproj file not found, '
+          'Check if you have a correct ios directory present in your project'
+          '\n\nrun " flutter create . " to regenerate missing files.');
+      return;
+    }
+    String? contents =
+    await FileUtils.instance.readFileAsString(FARConstants.iOSProjectFile);
+
+    var reg = RegExp(r'INFOPLIST_KEY_CFBundleDisplayName\s*=?\s*(.*);',
+        caseSensitive: true, multiLine: false);
+    var match = reg.firstMatch(contents!);
+    if (match != null) {
+      var name = match.group(1);
+      final String? oldDisplayName = name;
+
+      print("Old Display Name: $oldDisplayName");
+
+      print('Updating project.pbxproj File');
+      await _replace(
+          FARConstants.iOSProjectFile, '\"$newAppName\"', oldDisplayName);
+      print('Finished updating CFBundleDisplayName');
+    } else {
+      print(
+          'WARNING: CFBundleDisplayName was not found in project.pbxproj file.\n'
+              'Skipping Changes...');
+    }
   }
 }
