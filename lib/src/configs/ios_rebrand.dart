@@ -85,9 +85,10 @@ class IoSRebrand {
       return;
     }
     String? contents =
-    await FileUtils.instance.readFileAsString(FARConstants.iOSProjectFile);
+        await FileUtils.instance.readFileAsString(FARConstants.iOSProjectFile);
 
-    var reg = RegExp(r'INFOPLIST_KEY_CFBundleDisplayName\s*=?\s*(.*);', caseSensitive: true, multiLine: false);
+    var reg = RegExp(r'INFOPLIST_KEY_CFBundleDisplayName\s*=?\s*(.*);',
+        caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match != null) {
       var name = match.group(1);
@@ -96,13 +97,13 @@ class IoSRebrand {
       print("Old Display Name: $oldDisplayName");
 
       print('Updating project.pbxproj File');
-      await _replace(FARConstants.iOSProjectFile, newAppName, oldDisplayName);
+      await _replace(
+          FARConstants.iOSProjectFile, '\"$newAppName\"', oldDisplayName);
       print('Finished updating ios bundle identifier');
-    }else{
+    } else {
       print(
-          '${magenta}WARNING:: CFBundleDisplayName was not found in project.pbxproj file, '
-              'Skipping Changes...${reset}'
-      );
+          '${magenta}WARNING: CFBundleDisplayName was not found in project.pbxproj file.\n'
+          'Skipping Changes...${reset}');
     }
   }
 }
