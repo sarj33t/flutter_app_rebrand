@@ -1,3 +1,3 @@
-## 1.0.1
+## 1.0.2
 
-* Flutter App Rebrand - Added Logo
+* iOS: Updates CFBundleDisplayName in pbxproj file if exist
