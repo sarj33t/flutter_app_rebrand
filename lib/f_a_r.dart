@@ -103,7 +103,7 @@ class FlutterAppRebrand {
         platform == TargetPlatform.android
             ? await AndroidRebrand.instance.updateAppName(newAppName)
             : platform == TargetPlatform.ios
-                ? await IoSRebrand.instance.overwriteInfoPlist(newAppName)
+                ? await IoSRebrand.instance.updateAppDisplayName(newAppName)
                 : null;
       } catch (ex) {
         _logError(platform, ex, 'App Name');
