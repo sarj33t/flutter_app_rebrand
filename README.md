@@ -100,6 +100,12 @@ This command will generate the `rebrand_config.json` JSON file that contains the
 
 ---
 
+## About the Author
+
+- For more projects, tutorials, and resources, visit my website: [sarj33t.com](https://sarj33t.com)
+
+---
+
 ## YouTube Video Guide
 
 For a step-by-step video guide on how to use **Flutter App Rebrand**, watch this YouTube video:
