@@ -1,4 +1,4 @@
-package com.sarj33t.panda
+package com.sarj33t.android
 
 import io.flutter.embedding.android.FlutterActivity
 

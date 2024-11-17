@@ -100,6 +100,27 @@ This command will generate the `rebrand_config.json` JSON file that contains the
 
 ---
 
+### Step 3: Run the Rebranding Command
+
+Execute the following command in your terminal:
+```
+dart run flutter_app_rebrand
+```
+- This will rebrand your Flutter application based on the properties that you've defined in `rebrand_config.json` file
+
+---
+
+### Step 4: Rebuild Your App
+Once the configurations are applied, rebuild your Flutter app for iOS and Android:
+```
+flutter build ios
+```
+```
+flutter build apk
+```
+
+---
+
 ## About the Author
 
 - For more projects, tutorials, and resources, visit my website: [sarj33t.com](https://sarj33t.com)
