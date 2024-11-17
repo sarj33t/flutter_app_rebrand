@@ -99,7 +99,7 @@ class IoSRebrand {
       print('Updating project.pbxproj File');
       await _replace(
           FARConstants.iOSProjectFile, '\"$newAppName\"', oldDisplayName);
-      print('Finished updating ios bundle identifier');
+      print('Finished updating CFBundleDisplayName');
     } else {
       print(
           '${magenta}WARNING: CFBundleDisplayName was not found in project.pbxproj file.\n'
