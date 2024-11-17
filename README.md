@@ -4,6 +4,8 @@
 
 **Flutter App Rebrand** automates the process of rebranding a Flutter application by updating the package name, launcher icon, and app name across both Android and iOS platforms. It ensures a smooth transition when you need to rebrand an app for new clients, products, or design overhauls.
 
+---
+
 ## Features
 
 - **Package Name Update**: Automatically updates the package name for both Android and iOS.
@@ -11,7 +13,9 @@
 - **App Name Update**: Changes the app name that is displayed on the device.
 - **Directory Structure Refactoring**: Moves the `MainActivity` to the correct new package directory and deletes the old one.
 - **iOS Bundle Identifier Update**: Updates the iOS product bundle identifier (`Runner.xcodeproj`).
+- **iOS Archive Name Update**: This package also updates the generated archive name as per the provided appName
 
+---
 
 ## What It does?
 - [x] Updates AndroidManifest.xml, build.gradle and MainActivity in both Java and Kotlin
@@ -20,31 +24,18 @@
 - [x] Updates Product Bundle Identifier in iOS (Runner.xcodeproj)
 - [x] Generate & updates AppIcons and ImageSets
 
+---
 
 ## How It Works
 
-This package uses a configuration file (`rebrand.json`) to automatically apply all the necessary changes to your Flutter app. Once the configuration file is set up, the rebranding process runs smoothly without the need for manual edits to each platform-specific file.
+This package uses a configuration file (`rebrand_config.json`) to automatically apply all the necessary changes to your Flutter app. Once the configuration file is set up, the rebranding process runs smoothly without the need for manual edits to each platform-specific file.
 
-### Configuration File (`rebrand.json`)
+---
 
-Create a file called `rebrand.json` in your Flutter project's root directory. This file should include the following keys with valid values:
-- `packageName`: The new package name (e.g., `com.newcompany.newapp`).
-- `launcherIconPath`: Path to the new launcher icon (e.g., `assets/icons/new_launcher_icon.png`).
-- `appName`: The new app name (e.g., `NewApp`).
+## Installation
 
-### Example `rebrand.json`:
-```json
-{
-  "packageName": "com.newcompany.newapp",
-  "launcherIconPath": "assets/icons/new_launcher_icon.png",
-  "appName": "NewApp"
-}
-```
+Add the `flutter_app_rebrand` package to your project by including it in your `pubspec.yaml` file under`dev_dependencies:` section.
 
-
-## How to Use?
-
-Add Flutter App Rebrand to your `pubspec.yaml` in `dev_dependencies:` section.
 ```yaml
 dev_dependencies: 
   flutter_app_rebrand: ^1.0.0
@@ -54,18 +45,87 @@ or run this command
 flutter pub add -d flutter_app_rebrand
 ```
 
-
 Update dependencies
 ```
 flutter pub get
 ```
-Run this command to change the package configurations for both the platforms.
 
+---
+
+## Usage
+
+### Step 1: Define Your Input Configuration (Manually creating json file)
+
+Create a JSON configuration file in your project's root directory, such as `rebrand_config.json`, with the following structure:
+
+```json
+{
+  "ios": {
+    "packageName": "com.sarj33t.ios",
+    "launcherIconPath": "../FAR-logo.png",
+    "appName": "Panda iOS"
+  },
+  "android": {
+    "packageName": "com.sarj33t.android",
+    "launcherIconPath": "../FAR-logo.png",
+    "appName": "Panda Droid"
+  }
+}
 ```
-dart run flutter_app_rebrand:main rebrand.json
+**Configuration Details:**
+###### iOS:
+- packageName: Unique bundle identifier for the iOS app.
+- launcherIconPath: Path to the iOS launcher icon file.
+- appName: Display name for the iOS app.
+
+###### Android:
+- packageName: Unique package name for the Android app.
+- launcherIconPath: Path to the Android launcher icon file.
+- appName: Display name for the Android app.
+
+**Notes:**
+- The configuration can be platform-specific or identical for both iOS and Android.
+- Ensure the launcherIconPath points to a valid image file relative to the configuration file.
+
+---
+
+### Step 2: Generate Configuration File using command (Auto Generate json file)
+
+Run the following command in your terminal:
+```
+dart run flutter_app_rebrand:build
 ```
 
-where `rebrand.json` is the JSON file that contains the new package name, path to the new launcher icon, and the updated app name.
+This command will generate the `rebrand_config.json` JSON file that contains the new package name, path to the new launcher icon, and the updated app name.
+
+---
+
+### Step 3: Run the Rebranding Command
+
+Execute the following command in your terminal:
+```
+dart run flutter_app_rebrand
+```
+- This will rebrand your Flutter application based on the properties that you've defined in `rebrand_config.json` file
+
+---
+
+### Step 4: Rebuild Your App
+Once the configurations are applied, rebuild your Flutter app for iOS and Android:
+```
+flutter build ios
+```
+```
+flutter build apk
+```
+
+---
+
+## About the Author
+
+- For more projects, tutorials, and resources, visit my website: [sarj33t.com](https://sarj33t.com)
+
+---
 
 ## YouTube Video Guide
 
@@ -74,11 +134,15 @@ For a step-by-step video guide on how to use **Flutter App Rebrand**, watch this
 [![Watch the video](https://img.youtube.com/vi/qMqxev7-gV4/maxresdefault.jpg)](https://www.youtube.com/watch?v=qMqxev7-gV4)
 
 
+---
+
 ## Meta
 
 Distributed under the MIT license.
 
 [https://github.com/sarj33t/flutter_app_rebrand](https://github.com/sarj33t/flutter_app_rebrand)
+
+---
 
 ## Contributing
 
@@ -87,6 +151,8 @@ Distributed under the MIT license.
 3. Commit your changes with a descriptive message (`git commit -am 'Add new feature: your-feature-name''`)
 4. Push to the branch (`git push origin feature/your-feature-name`)
 5. Open a Pull Request and submit it for review.
+
+---
 
 ## Support
 
