@@ -7,10 +7,10 @@
 ## Features
 
 - **Package Name Update**: Automatically updates the package name for both Android and iOS.
-- **Launcher Icon Update**: Replaces the app’s launcher icon with a new one, updating for both platforms.
 - **App Name Update**: Changes the app name that is displayed on the device.
 - **Directory Structure Refactoring**: Moves the `MainActivity` to the correct new package directory and deletes the old one.
 - **iOS Bundle Identifier Update**: Updates the iOS product bundle identifier (`Runner.xcodeproj`).
+- **Launcher Icon Update**: Replaces the app’s launcher icon with a new one, updating for both platforms.  Optional if flutter_launcher_icons package is not being used.
 
 
 ## What It does?
@@ -29,15 +29,19 @@ This package uses a configuration file (`rebrand.json`) to automatically apply a
 
 Create a file called `rebrand.json` in your Flutter project's root directory. This file should include the following keys with valid values:
 - `packageName`: The new package name (e.g., `com.newcompany.newapp`).
-- `launcherIconPath`: Path to the new launcher icon (e.g., `assets/icons/new_launcher_icon.png`).
+- `iosBundleIdentifier` Optional if IOS bundle identifier is different than the `packageName` on Android
 - `appName`: The new app name (e.g., `NewApp`).
+- `iosBundleDisplayName` Optional if the IOS bundle display name is different than the `appName` for android
+- `launcherIconPath`: Path to the new launcher icon (e.g., `assets/icons/new_launcher_icon.png`).  Do not specify if flutter_laucher_icons package is being used.
 
 ### Example `rebrand.json`:
 ```json
 {
-  "packageName": "com.newcompany.newapp",
-  "launcherIconPath": "assets/icons/new_launcher_icon.png",
-  "appName": "NewApp"
+  "packageName": "com.newcompany.newapp",         <<<< This changes the android <manfest package=XXXX > name and also BundleIdentifer unless "iosBundleIdentifier" is specified
+  "iosBundleIdentifier": "com.newcompany.newapp.BundleIDForIOS",   <<<< Optional if IOS bundle identifier is different than the "packageName" on Android
+  "appName": "NewApp",    <<< This changes the android:label in the AndroidManifest.xml (and BundleDisplayName on IOS if "iosBundleDisplayName" is not specified)
+  "iosBundleDisplayName": "NewBundleDisplayName",   <<<<< Optional if the IOS bundle display name is different than the "appName" on android
+  "launcherIconPath": "assets/icons/new_launcher_icon.png",   <<< DO NOT specify if flutter_launcher_icons package is being used
 }
 ```
 
@@ -47,7 +51,7 @@ Create a file called `rebrand.json` in your Flutter project's root directory. Th
 Add Flutter App Rebrand to your `pubspec.yaml` in `dev_dependencies:` section.
 ```yaml
 dev_dependencies: 
-  flutter_app_rebrand: ^1.0.0
+  flutter_app_rebrand: ^1.0.3
 ```
 or run this command
 ```bash
@@ -87,6 +91,10 @@ Distributed under the MIT license.
 3. Commit your changes with a descriptive message (`git commit -am 'Add new feature: your-feature-name''`)
 4. Push to the branch (`git push origin feature/your-feature-name`)
 5. Open a Pull Request and submit it for review.
+
+## Acknowledgements
+
+The launcher icon code within FAR was originally extracted from version XYZ of the [flutter_launcher_icon package](https://pub.dev/packages/flutter_launcher_icons).
 
 ## Support
 

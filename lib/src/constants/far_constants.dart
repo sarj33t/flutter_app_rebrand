@@ -69,6 +69,7 @@ class FARConstants {
 
   /// Android Specific
   static const String androidAppBuildGradle = 'android/app/build.gradle';
+  static const String androidAppBuildGradleKTS = 'android/app/build.gradle.kts';
   static const String androidManifest =
       'android/app/src/main/AndroidManifest.xml';
   static const String androidDebugManifest =
@@ -108,12 +109,20 @@ class FARConstants {
   ];
 
   static const packageNameKey = 'packageName';
+  static const iosBundleIdentifierNameKey = 'iosBundleIdentifier';
   static const launcherIconPathKey = 'launcherIconPath';
   static const appNameKey = 'appName';
+  static const iosBundleDisplayNameKey = 'iosBundleDisplayName';
   static const rebrandFileKey = 'rebrand.json';
   static const packageNameStringError = 'Package name must be String';
   static const launcherIconPathStringError =
-      'Launcher Icon path must be String';
+      '${launcherIconPathKey} must be MISSING or be String';
+  static const iosBundleIdentifierNameKeyStringError =
+       '${iosBundleIdentifierNameKey} must be MISSING or be String';
+  static const iosBundleDisplayNameKeyStringError =
+      '${iosBundleDisplayNameKey} must be MISSING or be String';
+
+
   static const appNameStringError = 'App Name must be String';
 
   static const String version = 'version';
