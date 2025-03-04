@@ -47,9 +47,9 @@ class FlutterAppRebrand {
       assert(data[FARConstants.appNameKey] is String,
           FARConstants.appNameStringError);
       assert(data[FARConstants.iosBundleIdentifierNameKey]==null || (data[FARConstants.iosBundleIdentifierNameKey] is String),
-          FARConstants.launcherIconPathStringError);
+          FARConstants.iosBundleIdentifierNameKeyStringError);
       assert(data[FARConstants.iosBundleDisplayNameKey]==null || (data[FARConstants.iosBundleDisplayNameKey] is String),
-          FARConstants.launcherIconPathStringError);
+          FARConstants.iosBundleDisplayNameKeyStringError);
 
       // Extract fields from JSON
       final String newPackageName = data[FARConstants.packageNameKey];
