@@ -128,14 +128,14 @@ class FARConstants {
   // Define the platform-specific configurations
   static final Map<String, dynamic> defaultConfig = {
     "ios": {
-      "packageName": "com.sarj33t.app",
+      "packageName": "com.sarj33t.ios",
       "launcherIconPath": "../FAR-logo.png",
-      "appName": "Panda"
+      "appName": "Panda iOS"
     },
     "android": {
-      "packageName": "com.sarj33t.app",
+      "packageName": "com.sarj33t.android",
       "launcherIconPath": "../FAR-logo.png",
-      "appName": "Panda"
+      "appName": "Panda Droid"
     }
   };
 }
