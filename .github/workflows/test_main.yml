@@ -51,7 +51,6 @@ jobs:
       - name: Run package rebrand command
         run: |
           cd test_app
-          dart run flutter_app_rebrand:build
           dart run flutter_app_rebrand
 
       # STEP: 8 - Check & Validate Updated Android Files
@@ -83,5 +82,5 @@ jobs:
       -  name: Upload app bundle as artifact
          uses: actions/upload-artifact@v4.4.3
          with:
-           name: Panda App
+           name: Android App
            path: test_app/build/app/outputs/flutter-apk/app-debug.apk
