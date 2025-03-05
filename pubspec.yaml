@@ -7,6 +7,9 @@ maintainer: Sarjeet Sandhu
 
 homepage: https://github.com/sarj33t/flutter_app_rebrand
 
+funding:
+  - https://www.buymeacoffee.com/sarj33t
+
 environment:
   sdk: ^3.5.3
 

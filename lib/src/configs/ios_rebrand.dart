@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_app_rebrand/src/constants/ansi_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
@@ -11,11 +12,11 @@ class IoSRebrand {
   static IoSRebrand get instance => _singleton;
 
   Future<void> process(String newPackageName) async {
-    print("Running for ios");
+    print('${green}Running for iOS${reset}');
     if (!await File(FARConstants.iOSProjectFile).exists()) {
-      print('ERROR:: project.pbxproj file not found, '
+      print('${red}ERROR:: project.pbxproj file not found, '
           'Check if you have a correct ios directory present in your project'
-          '\n\nrun " flutter create . " to regenerate missing files.');
+          '\n\nrun " flutter create . " to regenerate missing files.${reset}');
       return;
     }
     String? contents =
@@ -25,9 +26,10 @@ class IoSRebrand {
         caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match == null) {
-      print('ERROR:: Bundle Identifier not found in project.pbxproj file, '
+      print(
+          '${red}ERROR:: Bundle Identifier not found in project.pbxproj file, '
           'Please file an issue on github with ${FARConstants.iOSProjectFile} '
-          'file attached.');
+          'file attached.${reset}');
       return;
     }
     var name = match.group(1);
@@ -47,7 +49,7 @@ class IoSRebrand {
   }
 
   /// Updates CFBundleName
-  Future<void> overwriteInfoPlist(String name) async {
+  Future<void> updateAppDisplayName(String name) async {
     // Read the file as a string
     final File file = File(FARConstants.iOSPlistFile);
     if (!file.existsSync()) {
@@ -77,13 +79,13 @@ class IoSRebrand {
   /// Updates CFBundleDisplayName in PbxProj file
   Future<void> makeChangesInPbxProj(String newAppName) async {
     if (!await File(FARConstants.iOSProjectFile).exists()) {
-      print('ERROR:: project.pbxproj file not found, '
+      print('${red}ERROR:: project.pbxproj file not found, '
           'Check if you have a correct ios directory present in your project'
-          '\n\nrun " flutter create . " to regenerate missing files.');
+          '\n\nrun " flutter create . " to regenerate missing files.${reset}');
       return;
     }
     String? contents =
-    await FileUtils.instance.readFileAsString(FARConstants.iOSProjectFile);
+        await FileUtils.instance.readFileAsString(FARConstants.iOSProjectFile);
 
     var reg = RegExp(r'INFOPLIST_KEY_CFBundleDisplayName\s*=?\s*(.*);',
         caseSensitive: true, multiLine: false);
@@ -100,8 +102,8 @@ class IoSRebrand {
       print('Finished updating CFBundleDisplayName');
     } else {
       print(
-          'WARNING: CFBundleDisplayName was not found in project.pbxproj file.\n'
-              'Skipping Changes...');
+          '${magenta}WARNING: CFBundleDisplayName was not found in project.pbxproj file.\n'
+          'Skipping Changes...${reset}');
     }
   }
 }

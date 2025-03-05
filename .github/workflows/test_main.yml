@@ -12,7 +12,8 @@ jobs:
 
     steps:
       # STEP: 1 - Checkout latest version of repo on Git Runner
-      - uses: actions/checkout@v4.2.1
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.1
 
       # STEP: 2 - Setup Flutter - stable
       - name: Set up Flutter
@@ -20,47 +21,47 @@ jobs:
         with:
           channel: stable
 
-      # STEP: 3 - Creates a new flutter project on ubuntu machine
+      # STEP: 2 - Setup Java environment for building Android app
+      - name: Set Up Java
+        uses: actions/setup-java@v4.4.0
+        with:
+          distribution: 'oracle'  # Recommended distribution
+          java-version: '21'
+
+      # STEP: 4 - Creates a new flutter project on Runner
       - name: Create a new Flutter project
         run: |
           flutter create test_app
           cp FAR-logo.png ./test_app
           cd test_app
 
-      # STEP: 4 - Adds flutter_app_rebrand package to pubspec YAML
-      - name: Add your package to pubspec.yaml
+      # STEP: 5 - Adds flutter_app_rebrand package to pubspec YAML
+      - name: Add package to pubspec.yaml
         run: |
           cd test_app
           sed -i '/dev_dependencies:/a\  flutter_app_rebrand:\n    path: ../' pubspec.yaml
 
-      # STEP: 5 - Run Clean and Get Dependencies
+      # STEP: 6 - Run Clean and Get Dependencies
       - name: Get dependencies
         run: |
           cd test_app
           flutter pub get
 
-      # STEP: 6 - Creates a JSON called rebrand.JSON that our
-        # package requires in project's root dir
-
-      - name: Create rebrand.json
-        run: |
-          echo '{"packageName": "com.sarj33t.app", "launcherIconPath": "FAR-logo.png",
-          "appName": "Panda App" }' > test_app/rebrand.json
-
       # STEP: 7 - Run the rebranding command
       - name: Run package rebrand command
         run: |
           cd test_app
-          dart run flutter_app_rebrand:main rebrand.json
+          dart run flutter_app_rebrand:build
+          dart run flutter_app_rebrand
 
-      # STEP: 8 - Check Android files are updated
+      # STEP: 8 - Check & Validate Updated Android Files
       - name: Check Android files
         run: |
           cd test_app
           grep -q "applicationId = \"com.sarj33t.app\"" android/app/build.gradle || exit 1
           grep -q "package com.sarj33t.app" android/app/src/main/kotlin/com/sarj33t/app/MainActivity.kt || exit 1
 
-      # STEP: 9 - Check iOS files are updated
+      # STEP: 9 - Check & Validate Updated iOS Files
       - name: Check iOS files
         run: |
           cd test_app

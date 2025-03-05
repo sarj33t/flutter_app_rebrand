@@ -1,0 +1,12 @@
+{
+  "ios": {
+    "packageName": "com.sarj33t.ios",
+    "launcherIconPath": "../FAR-logo.png",
+    "appName": "Panda iOS"
+  },
+  "android": {
+    "packageName": "com.sarj33t.android",
+    "launcherIconPath": "../FAR-logo.png",
+    "appName": "Panda Droid"
+  }
+}
