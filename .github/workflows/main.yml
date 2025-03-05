@@ -57,14 +57,14 @@ jobs:
       - name: Check Android files
         run: |
           cd test_app
-          grep -q "applicationId = \"com.sarj33t.app\"" android/app/build.gradle || exit 1
-          grep -q "package com.sarj33t.app" android/app/src/main/kotlin/com/sarj33t/app/MainActivity.kt || exit 1
+          grep -q "applicationId = \"com.sarj33t.android\"" android/app/build.gradle || exit 1
+          grep -q "package com.sarj33t.android" android/app/src/main/kotlin/com/sarj33t/android/MainActivity.kt || exit 1
 
       # STEP: 9 - Check & Validate Updated iOS Files
       - name: Check iOS files
         run: |
           cd test_app
-          grep -q "PRODUCT_BUNDLE_IDENTIFIER = com.sarj33t.app" ios/Runner.xcodeproj/project.pbxproj || exit 1
+          grep -q "PRODUCT_BUNDLE_IDENTIFIER = com.sarj33t.ios" ios/Runner.xcodeproj/project.pbxproj || exit 1
 
       # STEP: 10 - Run analysis for any issue
       - name: Run Flutter analyze
