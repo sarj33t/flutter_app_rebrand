@@ -52,6 +52,7 @@ jobs:
         run: |
           cd test_app
           dart run flutter_app_rebrand:build
+          dart run flutter_app_rebrand
 
       # STEP: 8 - Check & Validate Updated Android Files
       - name: Check Android files
