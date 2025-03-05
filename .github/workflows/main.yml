@@ -57,6 +57,7 @@ jobs:
       - name: Check Android files
         run: |
           cd test_app
+          pwd
           grep -q "applicationId = \"com.sarj33t.android\"" android/app/build.gradle || exit 1
           grep -q "package com.sarj33t.android" android/app/src/main/kotlin/com/sarj33t/android/MainActivity.kt || exit 1
 
