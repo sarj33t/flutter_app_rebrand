@@ -17,13 +17,13 @@ jobs:
 
       # STEP: 2 - Setup Flutter - stable
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2.16.0
+        uses: subosito/flutter-action@v2.18.0
         with:
           channel: stable
 
       # STEP: 2 - Setup Java environment for building Android app
       - name: Set Up Java
-        uses: actions/setup-java@v4.4.0
+        uses: actions/setup-java@v4.7.0
         with:
           distribution: 'oracle'  # Recommended distribution
           java-version: '21'
@@ -58,6 +58,10 @@ jobs:
         run: |
           cd test_app
           pwd
+          ls
+          cd android
+          cd app
+          ls
           grep -q "applicationId = \"com.sarj33t.android\"" android/app/build.gradle || exit 1
           grep -q "package com.sarj33t.android" android/app/src/main/kotlin/com/sarj33t/android/MainActivity.kt || exit 1
 
