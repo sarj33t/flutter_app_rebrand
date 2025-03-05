@@ -1,0 +1,74 @@
+name: Test Package
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  test_package_functionality:
+    runs-on: ubuntu-latest
+
+    steps:
+      # STEP: 1 - Checkout latest version of repo on Git Runner
+      - name: Checkout Repository
+        uses: actions/checkout@v4.2.1
+
+      # STEP: 2 - Setup Flutter - stable
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2.18.0
+        with:
+          channel: stable
+
+      # STEP: 2 - Setup Java environment for building Android app
+      - name: Set Up Java
+        uses: actions/setup-java@v4.7.0
+        with:
+          distribution: 'oracle'  # Recommended distribution
+          java-version: '21'
+
+      # STEP: 4 - Creates a new flutter project on Runner
+      - name: Create a new Flutter project
+        run: |
+          flutter create test_app
+          cp FAR-logo.png ./test_app
+          cd test_app
+
+      # STEP: 5 - Adds flutter_app_rebrand package to pubspec YAML
+      - name: Add package to pubspec.yaml
+        run: |
+          cd test_app
+          sed -i '/dev_dependencies:/a\  flutter_app_rebrand:\n    path: ../' pubspec.yaml
+
+      # STEP: 6 - Run Clean and Get Dependencies
+      - name: Get dependencies
+        run: |
+          cd test_app
+          flutter pub get
+
+      # STEP: 7 - Run the rebranding command
+      - name: Run package rebrand command
+        run: |
+          cd test_app
+          dart run flutter_app_rebrand:build
+          dart run flutter_app_rebrand
+
+      # STEP: 8 - Check & Validate Updated Android Files
+      - name: Check Android files
+        run: |
+          cd test_app
+          grep -q "applicationId = \"com.sarj33t.android\"" android/app/build.gradle.kts || exit 1
+          grep -q "package com.sarj33t.android" android/app/src/main/kotlin/com/sarj33t/android/MainActivity.kt || exit 1
+
+      # STEP: 9 - Check & Validate Updated iOS Files
+      - name: Check iOS files
+        run: |
+          cd test_app
+          grep -q "PRODUCT_BUNDLE_IDENTIFIER = com.sarj33t.ios" ios/Runner.xcodeproj/project.pbxproj || exit 1
+
+      # STEP: 10 - Run analysis for any issue
+      - name: Run Flutter analyze
+        run: |
+          cd test_app
+          flutter analyze

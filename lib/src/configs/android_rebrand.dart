@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter_app_rebrand/src/constants/ansi_constants.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 
@@ -23,12 +24,13 @@ class AndroidRebrand {
     'mipmap-xxxhdpi'
   ];
 
-  Future<void> process(String newPackageName) async {
-    print("Running for android");
-    if (!await File(FARConstants.androidAppBuildGradle).exists()) {
+
+  Future<void> processBuildGradleFile(String newPackageName) async {
+    print('${green}Running for Android${reset}');
+     if (!await File(FARConstants.androidAppBuildGradle).exists()) {
       print(
-          'ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
-          '\n\nrun " flutter create . " to regenerate missing files.');
+          '${red}ERROR:: build.gradle file not found, Check if you have a correct android directory present in your project'
+          '\n\nrun " flutter create . " to regenerate missing files.${reset}');
       return;
     }
     String? contents = await FileUtils.instance
@@ -38,19 +40,77 @@ class AndroidRebrand {
         caseSensitive: true, multiLine: false);
     var match = reg.firstMatch(contents!);
     if (match == null) {
-      print('ERROR:: applicationId not found in build.gradle file, '
+      print('${red}ERROR:: applicationId not found in build.gradle file, '
           'Please file an issue on github with '
-          '${FARConstants.androidAppBuildGradle} file attached.');
+          '${FARConstants.androidAppBuildGradle} file attached.${reset}');
       return;
     }
     var name = match.group(1);
     final String? oldPackageName = name;
 
-    print("Old Package Name: $oldPackageName");
+    print("Previous applicationId Package Name: $oldPackageName");
 
     print('Updating build.gradle File');
     await _replace(
         FARConstants.androidAppBuildGradle, newPackageName, oldPackageName);
+  }
+
+
+// In build.gradle.kts file WE MUST CHANGE BOTH namespace= and applicationId=
+Future<void> processBuildGradleFileKTS(String newPackageName) async {
+     if (!await File(FARConstants.androidAppBuildGradleKTS).exists()) {
+      print(
+          'ERROR:: build.gradle.kts file not found, Check if you have a correct android directory present in your project'
+          '\n\nrun " flutter create . " to regenerate missing files.');
+      return;
+    }
+    String? contents = await FileUtils.instance
+        .readFileAsString(FARConstants.androidAppBuildGradleKTS);
+
+    var regNamespace = RegExp(r'namespace\s*=?\s*"(.*)"',
+        caseSensitive: true, multiLine: false);
+    var matchNamespace = regNamespace.firstMatch(contents!);
+    if (matchNamespace == null) {
+      print('ERROR:: namespace not found in build.gradle.kts file, '
+          'Please file an issue on github with '
+          '${FARConstants.androidAppBuildGradleKTS} file attached.');
+      return;
+    }
+    var nameNamespace = matchNamespace.group(1);
+    final String? oldNamespacePackageName = nameNamespace;
+
+    print("Previous namespace Package Name: $oldNamespacePackageName");
+
+
+    // Now Do applicationId
+    var reg = RegExp(r'applicationId\s*=?\s*"(.*)"',
+        caseSensitive: true, multiLine: false);
+    var match = reg.firstMatch(contents!);
+    if (match == null) {
+      print('ERROR:: applicationId not found in build.gradle.kts file, '
+          'Please file an issue on github with '
+          '${FARConstants.androidAppBuildGradleKTS} file attached.');
+      return;
+    }
+    var name = match.group(1);
+    final String? oldPackageName = name;
+
+    print("Previous applicationId Package Name: $oldPackageName");
+
+    print('Updating build.gradle.kts File');
+    await _replace(
+        FARConstants.androidAppBuildGradleKTS, newPackageName, oldPackageName);
+  }
+
+  Future<void> process(String newPackageName) async {
+    print("Running for android");
+    if (await File(FARConstants.androidAppBuildGradle).exists()) {
+      processBuildGradleFile(newPackageName);
+    }
+
+    if (await File(FARConstants.androidAppBuildGradleKTS).exists()) {
+      processBuildGradleFileKTS(newPackageName);
+    }
 
     var mText = 'package="$newPackageName">';
     var mRegex = '(package=.*)';
@@ -123,7 +183,8 @@ class AndroidRebrand {
               entity.deleteSync();
               print('Deleted: ${entity.path}');
             } catch (ex) {
-              print('Error deleting file: ${entity.path}, Error: $ex');
+              print(
+                  '${red}Error deleting file: ${entity.path}, Error: $ex${reset}');
             }
           }
         });
@@ -133,7 +194,7 @@ class AndroidRebrand {
           try {
             dir.deleteSync();
           } catch (ex) {
-            print('Error deleting dir: $dir, Error: $ex');
+            print('${red}Error deleting dir: $dir, Error: $ex${reset}');
           }
         }
       }
@@ -177,7 +238,7 @@ class AndroidRebrand {
         // Replace the existing file with the new image
         newImageFile.copySync(targetPath);
       } else {
-        print('File not found: $targetPath');
+        print('${red}File not found: $targetPath${reset}');
       }
     }
   }

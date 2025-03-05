@@ -20,7 +20,7 @@ class IoSIconGenerator {
   IoSIconGenerator();
 
   /// Create the ios icons
-  void createIcons(Config config) {
+  Future<void> createIcons(Config config) async {
     final String filePath = config.iconPath;
     if (filePath.isEmpty) {
       throw Exception('Missing Image Path');
@@ -61,7 +61,7 @@ class IoSIconGenerator {
     changeIosLauncherIcon('AppIcon');
     // Still need to modify the Contents.json file
     // since the user could have added dark and tinted icons
-    modifyDefaultContentsFile(iconName);
+    await modifyDefaultContentsFile(iconName);
   }
 
   void overwriteDefaultIcons(IosIconTemplate template, Image image,
@@ -125,10 +125,12 @@ class IoSIconGenerator {
   }
 
   /// Modify default Contents.json file
-  void modifyDefaultContentsFile(String newIconName) {
+  Future<void> modifyDefaultContentsFile(String newIconName) async {
     const String newIconFolder =
         '${FARConstants.iosAssetFolder}AppIcon.appiconset/Contents.json';
-    File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
+    await File(newIconFolder)
+        .create(recursive: true)
+        .then((File contentsJsonFile) {
       final String contentsFileContent =
           generateContentsFileAsString(newIconName);
       contentsJsonFile.writeAsString(contentsFileContent);
