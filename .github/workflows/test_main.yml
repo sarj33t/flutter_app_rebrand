@@ -51,7 +51,7 @@ jobs:
       - name: Run package rebrand command
         run: |
           cd test_app
-          dart run flutter_app_rebrand
+          dart run flutter_app_rebrand:build
 
       # STEP: 8 - Check & Validate Updated Android Files
       - name: Check Android files
