@@ -54,7 +54,8 @@ flutter pub get
 
 ## Usage
 
-### Step 1: Define Your Input Configuration (Manually creating json file)
+### Step 1: Define Your Input Configuration
+### Option 1: Manually creating json file
 
 Create a JSON configuration file in your project's root directory, such as `rebrand_config.json`, with the following structure:
 
@@ -89,7 +90,7 @@ Create a JSON configuration file in your project's root directory, such as `rebr
 
 ---
 
-### Step 2: Generate Configuration File using command (Auto Generate json file)
+### Option 2: Auto Generate JSON Config file
 
 Run the following command in your terminal:
 ```
@@ -100,7 +101,7 @@ This command will generate the `rebrand_config.json` JSON file that contains the
 
 ---
 
-### Step 3: Run the Rebranding Command
+### Step 2: Run the Rebranding Command
 
 Execute the following command in your terminal:
 ```
@@ -110,7 +111,7 @@ dart run flutter_app_rebrand
 
 ---
 
-### Step 4: Rebuild Your App
+### Step 3: Rebuild Your App
 Once the configurations are applied, rebuild your Flutter app for iOS and Android:
 ```
 flutter build ios
@@ -130,6 +131,8 @@ flutter build apk
 ## YouTube Video Guide
 
 For a step-by-step video guide on how to use **Flutter App Rebrand**, watch this YouTube video:
+
+(NOTE: it will refer to older versions of FAR, will re-upload new video soon)
 
 [![Watch the video](https://img.youtube.com/vi/qMqxev7-gV4/maxresdefault.jpg)](https://www.youtube.com/watch?v=qMqxev7-gV4)
 

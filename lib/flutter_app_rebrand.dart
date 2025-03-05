@@ -6,9 +6,9 @@ import 'package:flutter_app_rebrand/src/configs/config.dart';
 import 'package:flutter_app_rebrand/src/configs/ios_rebrand.dart';
 import 'package:flutter_app_rebrand/src/constants/far_constants.dart';
 import 'package:flutter_app_rebrand/src/icon_generators/android/android_icon_generator.dart';
+import 'package:flutter_app_rebrand/src/icon_generators/iOS/ios_icon_generator.dart';
 import 'package:flutter_app_rebrand/src/utils/file_utils.dart';
 import 'dart:io';
-import 'src/icon_generators/iOS/ios_icon_generator.dart';
 
 const bool includeFlutterLauncherIconCode = true;
 
@@ -62,10 +62,10 @@ class FlutterAppRebrand {
         await AndroidRebrand.instance.process(newPackageName);
         await IoSRebrand.instance.process(newIOSBundleIdentifier);
       }
-      if (newLauncherIcon!=null && newLauncherIcon.isNotEmpty) {
+      if (newLauncherIcon != null && newLauncherIcon.isNotEmpty) {
         if(includeFlutterLauncherIconCode) {
           final config = Config(iconPath: newLauncherIcon);
-          //FUCK//IoSIconGenerator().createIcons(config);
+          IoSIconGenerator().createIcons(config);
           AndroidIconGenerator().createDefaultIcons(config);
         } else {
           print('ERROR - flutter_launcher_icons code was specified NOT TO BE USED but `${FARConstants.launcherIconPathKey}` was specified');
@@ -73,7 +73,7 @@ class FlutterAppRebrand {
       }
       if (newAppName.isNotEmpty) {
         await AndroidRebrand.instance.updateAppName(newAppName);
-        await IoSRebrand.instance.overwriteInfoPlist(iosBundleDisplayName);
+        await IoSRebrand.instance.process(iosBundleDisplayName);
       }
     } catch (ex) {
       print('Error reading or parsing JSON: $ex');

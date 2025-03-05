@@ -112,10 +112,6 @@ Future<void> processBuildGradleFileKTS(String newPackageName) async {
       processBuildGradleFileKTS(newPackageName);
     }
 
-
-
-
-
     var mText = 'package="$newPackageName">';
     var mRegex = '(package=.*)';
 
