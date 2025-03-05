@@ -85,7 +85,7 @@ Future<void> processBuildGradleFileKTS(String newPackageName) async {
     // Now Do applicationId
     var reg = RegExp(r'applicationId\s*=?\s*"(.*)"',
         caseSensitive: true, multiLine: false);
-    var match = reg.firstMatch(contents!);
+    var match = reg.firstMatch(contents);
     if (match == null) {
       print('ERROR:: applicationId not found in build.gradle.kts file, '
           'Please file an issue on github with '
