@@ -31,50 +31,52 @@ jobs:
       # STEP: 4 - Creates a new flutter project on Runner
       - name: Create a new Flutter project
         run: |
-          flutter create test_app
-          cp FAR-logo.png ./test_app
-          cd test_app
+          flutter create example
+          cp FAR-logo.png ./example
+
+#          cd example
 
       # STEP: 5 - Adds flutter_app_rebrand package to pubspec YAML
       - name: Add package to pubspec.yaml
         run: |
-          cd test_app
+          cd example
           sed -i '/dev_dependencies:/a\  flutter_app_rebrand:\n    path: ../' pubspec.yaml
 
       # STEP: 6 - Run Clean and Get Dependencies
       - name: Get dependencies
         run: |
-          cd test_app
+          cd example
           flutter pub get
 
       # STEP: 7 - Run the rebranding command
       - name: Run package rebrand command
         run: |
-          cd test_app
+          cd example
           dart run flutter_app_rebrand:build
 
       # STEP: 8 - Check & Validate Updated Android Files
       - name: Check Android files
         run: |
+          cd example
           grep -q "applicationId = \"com.sarj33t.android\"" android/app/build.gradle || exit 1
           grep -q "package com.sarj33t.android" android/app/src/main/kotlin/com/sarj33t/android/MainActivity.kt || exit 1
 
       # STEP: 9 - Check & Validate Updated iOS Files
       - name: Check iOS files
         run: |
-          cd test_app
+          cd example
           grep -q "PRODUCT_BUNDLE_IDENTIFIER = com.sarj33t.ios" ios/Runner.xcodeproj/project.pbxproj || exit 1
 
       # STEP: 10 - Run analysis for any issue
       - name: Run Flutter analyze
         run: |
-          cd test_app
+          cd example
           flutter analyze
 
       # STEP: 11 - Generate Debug APK file
       - name: Build APK to verify
         run: |
-          cd test_app
+          cd example
           flutter build apk --debug
 
       # STEP: 12 - Upload Debug APK file
@@ -82,4 +84,4 @@ jobs:
          uses: actions/upload-artifact@v4.4.3
          with:
            name: Android App
-           path: test_app/build/app/outputs/flutter-apk/app-debug.apk
+           path: example/build/app/outputs/flutter-apk/app-debug.apk
