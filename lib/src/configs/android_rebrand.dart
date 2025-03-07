@@ -257,6 +257,6 @@ Future<void> processBuildGradleFileKTS(String newPackageName) async {
         lines.add('');
       }
     }
-    androidManifestFile.writeAsString(lines.join('\n'));
+    androidManifestFile.writeAsString(lines.join('\n'),flush:true);
   }
 }

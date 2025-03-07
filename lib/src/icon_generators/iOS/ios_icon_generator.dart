@@ -110,7 +110,7 @@ class IoSIconGenerator {
     }
 
     final String entireFile = '${lines.join('\n')}\n';
-    await iOSConfigFile.writeAsString(entireFile);
+    await iOSConfigFile.writeAsString(entireFile,flush:true);
   }
 
   /// Create the Contents.json file
@@ -120,7 +120,7 @@ class IoSIconGenerator {
     File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
       final String contentsFileContent =
           generateContentsFileAsString(newIconName);
-      contentsJsonFile.writeAsString(contentsFileContent);
+      contentsJsonFile.writeAsString(contentsFileContent,flush:true);
     });
   }
 
@@ -131,7 +131,7 @@ class IoSIconGenerator {
     File(newIconFolder).create(recursive: true).then((File contentsJsonFile) {
       final String contentsFileContent =
           generateContentsFileAsString(newIconName);
-      contentsJsonFile.writeAsString(contentsFileContent);
+      contentsJsonFile.writeAsString(contentsFileContent,flush:true);
     });
   }
 
