@@ -68,7 +68,7 @@ class AndroidIconGenerator {
     final List<String> transformedLines =
         _transformAndroidManifestWithNewLauncherIcon(
             oldManifestLines, iconName);
-    await androidManifestFile.writeAsString(transformedLines.join('\n'));
+    await androidManifestFile.writeAsString(transformedLines.join('\n'),flush:true);
   }
 
   /// Updates only the line containing android:icon with the specified iconName

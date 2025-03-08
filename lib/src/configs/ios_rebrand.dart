@@ -70,7 +70,7 @@ class IoSRebrand {
     );
 
     // Write the updated content back to the file
-    await file.writeAsString(updatedContent);
+    await file.writeAsString(updatedContent,flush:true);
     print('Plist file updated successfully.');
 
     await makeChangesInPbxProj(name);
