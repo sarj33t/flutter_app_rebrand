@@ -40,7 +40,7 @@ class FileUtils {
 
   Future<void> writeFileFromString(String path, String contents) async {
     var file = File(path);
-    await file.writeAsString(contents);
+    await file.writeAsString(contents,flush:true);
   }
 
   Future<bool> rebrandJSONExist() async {

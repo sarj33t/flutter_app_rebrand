@@ -4,7 +4,10 @@ on:
   push:
     branches: [ dev ]
   pull_request:
-    branches: [ dev ]
+    branches:
+      - dev
+      - main
+      - feature/*
 
 jobs:
   test_package_functionality:
@@ -13,7 +16,7 @@ jobs:
     steps:
       # STEP: 1 - Checkout latest version of repo on Git Runner
       - name: Checkout Repository
-        uses: actions/checkout@v4.2.1
+        uses: actions/checkout@v4.2.2
 
       # STEP: 2 - Setup Flutter - stable
       - name: Set up Flutter
